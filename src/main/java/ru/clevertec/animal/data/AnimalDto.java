@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
+import ru.clevertec.animal.validator.NumericFields;
+import ru.clevertec.animal.validator.TextFields;
 
 /**
  * {@link ru.clevertec.animal.entity.Animal}
@@ -16,30 +18,36 @@ import lombok.experimental.FieldNameConstants;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
-public class AnimalDTO {
+public class AnimalDto {
 
     /**
      * {@link ru.clevertec.animal.entity.Animal}
      */
+    @TextFields(minLength = 1)
     private String name;
     /**
      * {@link ru.clevertec.animal.entity.Animal}
      */
+    @TextFields
     private String typeOfAnimal;
     /**
      * {@link ru.clevertec.animal.entity.Animal}
      */
+    @TextFields
     private String classOfAnimal;
     /**
      * {@link ru.clevertec.animal.entity.Animal}
      */
+    @NumericFields
     private double weight;
     /**
      * {@link ru.clevertec.animal.entity.Animal}
      */
+    @NumericFields
     private double height;
     /**
      * {@link ru.clevertec.animal.entity.Animal}
      */
+    @NumericFields
     private double speed;
 }
