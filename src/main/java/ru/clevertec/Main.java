@@ -1,6 +1,6 @@
 package ru.clevertec;
 
-import ru.clevertec.entity.Animal;
+import ru.clevertec.animal.entity.Animal;
 
 import java.util.UUID;
 

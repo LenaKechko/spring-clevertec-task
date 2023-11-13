@@ -1,12 +1,10 @@
-package ru.clevertec.entity;
+package ru.clevertec.animal.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
-import ru.clevertec.validator.NumericFields;
-import ru.clevertec.validator.TextFields;
 
 import java.util.UUID;
 
