@@ -2,8 +2,6 @@ package ru.clevertec;
 
 import ru.clevertec.animal.data.AnimalDto;
 import ru.clevertec.animal.entity.Animal;
-import ru.clevertec.animal.mapper.AnimalMapper;
-import ru.clevertec.animal.mapper.AnimalMapperImpl;
 import ru.clevertec.animal.validator.ObjectValidator;
 
 import java.util.UUID;
