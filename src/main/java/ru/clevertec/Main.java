@@ -1,7 +1,22 @@
 package ru.clevertec;
 
+import ru.clevertec.animal.data.AnimalDto;
+import ru.clevertec.animal.entity.Animal;
+import ru.clevertec.animal.validator.ObjectValidator;
+
+import java.util.UUID;
+
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
+    public static void main(String[] args) throws IllegalAccessException {
+        Animal animal = new Animal(UUID.randomUUID(), "name", "type", "class", 1000.0, 1.5, 0.0);
+        AnimalDto animalDto = new AnimalDto("Слон", "type", "class", 100.0, 1.5, 40.0);
+//        System.out.println(animal.toString());
+//        System.out.println(animalDto.toString());
+//        AnimalMapper mapper = new AnimalMapperImpl();
+//        System.out.println(mapper.toAnimalDTO(animal).toString());
+//        System.out.println(mapper.toAnimal(animalDto).toString());
+//        System.out.println(mapper.merge(animal, animalDto).toString());
+        System.out.println(ObjectValidator.validate(animal));
+        System.out.println(ObjectValidator.validate(animalDto));
     }
 }
