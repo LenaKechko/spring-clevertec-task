@@ -1,17 +1,10 @@
 package ru.clevertec;
 
-import ru.clevertec.animal.connection.MyConnection;
-import ru.clevertec.animal.dao.impl.AnimalDao;
 import ru.clevertec.animal.data.AnimalDto;
 import ru.clevertec.animal.entity.Animal;
-import ru.clevertec.animal.validator.ObjectValidator;
+import ru.clevertec.animal.service.BaseService;
+import ru.clevertec.animal.service.impl.AnimalServiceImpl;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class Main {
@@ -26,8 +19,14 @@ public class Main {
 //        System.out.println(mapper.merge(animal, animalDto).toString());
 //        System.out.println(ObjectValidator.validate(animal));
 //        System.out.println(ObjectValidator.validate(animalDto));
-        AnimalDao animalDao = new AnimalDao();
-        animalDao.setConnection(MyConnection.getConnectionDB());
-        System.out.println(animalDao.findAll());
+        BaseService<AnimalDto> service = new AnimalServiceImpl();
+
+//
+//        System.out.println(service.get(UUID.fromString("657e186a-1a01-48a9-a839-116b81b85057")));
+//        service.create(animalDto);
+//        animalDto.setName("Страус");
+//        service.update(UUID.fromString("b357dd88-5ff7-4485-bc7e-da81cca3fa6e"), animalDto);
+//        service.delete(UUID.fromString("b357dd88-5ff7-4485-bc7e-da81cca3fa6e"));
+        System.out.println(service.getAll());
     }
 }

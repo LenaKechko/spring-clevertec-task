@@ -1,11 +1,13 @@
 package ru.clevertec.animal.validator;
 
+import ru.clevertec.animal.exception.ValidatorException;
+
 import java.lang.reflect.Field;
 import java.util.regex.Pattern;
 
 public class ObjectValidator {
 
-    public static boolean validate(Object object) throws IllegalAccessException {
+    public static boolean validate(Object object) throws ValidatorException, IllegalAccessException {
         Class<?> objectClass = object.getClass();
         for (Field field : objectClass.getDeclaredFields()) {
             field.setAccessible(true);
@@ -27,8 +29,7 @@ public class ObjectValidator {
         double max = numericFieldsAnnotation.max();
 
         if (fieldValue < min || fieldValue > max) {
-            System.out.println("Validation failed for field " + field.getName() + ".");
-            return false;
+            throw new ValidatorException(field);
         }
         return true;
     }
@@ -39,10 +40,9 @@ public class ObjectValidator {
         Pattern pattern = Pattern.compile(
                 "^[а-яёА-ЯЁa-zA-Z \\-]{" + textFieldsAnnotation.minLength() + "," + textFieldsAnnotation.maxLength() + "}$",
                 Pattern.UNICODE_CHARACTER_CLASS);
-        boolean isValid = pattern.matcher(fieldValue).matches();
-        if (!isValid) {
-            System.out.println("Validation failed for field " + field.getName() + ".");
+        if (!pattern.matcher(fieldValue).matches()) {
+            throw new ValidatorException(field);
         }
-        return isValid;
+        return true;
     }
 }

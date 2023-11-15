@@ -1,4 +1,4 @@
-package ru.clevertec.animal.connection;
+package ru.clevertec.animal.connectionDB;
 
 import org.postgresql.ds.PGSimpleDataSource;
 

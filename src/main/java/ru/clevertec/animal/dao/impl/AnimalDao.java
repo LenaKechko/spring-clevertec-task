@@ -1,17 +1,17 @@
 package ru.clevertec.animal.dao.impl;
 
-import ru.clevertec.animal.dao.AbstractDao;
+import ru.clevertec.animal.connectionDB.MyConnection;
+import ru.clevertec.animal.dao.BaseDao;
 import ru.clevertec.animal.entity.Animal;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class AnimalDao extends AbstractDao<UUID, Animal> {
+public class AnimalDao implements BaseDao<UUID, Animal> {
+
+    private final Connection connection = MyConnection.getConnectionDB();
 
     /**
      * Запрос на вывод всех данных из таблицы
@@ -32,7 +32,7 @@ public class AnimalDao extends AbstractDao<UUID, Animal> {
      */
     public static final String SQL_INSERT_ANIMAL =
             "INSERT INTO animals(id, name, type_of_animal, class_of_animal, weight, height, speed) " +
-                    "VALUES (gen_random_uuid(), ?, ?, ?, ?, ?)";
+                    "VALUES (gen_random_uuid(), ?, ?, ?, ?, ?, ?)";
     /**
      * Запрос на изменение данных из таблицы БД по id
      */
@@ -55,6 +55,7 @@ public class AnimalDao extends AbstractDao<UUID, Animal> {
                 double speed = rs.getDouble(7);
                 animals.add(new Animal(id, name, typeOfAnimal, classOfAnimal, weight, height, speed));
             }
+            animals.forEach(System.out::println);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -65,7 +66,7 @@ public class AnimalDao extends AbstractDao<UUID, Animal> {
     public Animal findEntityById(UUID id) {
         Animal animal = null;
         try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ANIMAL_BY_ID)) {
-            statement.setString(1, String.valueOf(id));
+            statement.setObject(1, id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 String name = rs.getString("name");
@@ -85,7 +86,7 @@ public class AnimalDao extends AbstractDao<UUID, Animal> {
     @Override
     public boolean delete(UUID id) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_ANIMAL_ID)) {
-            preparedStatement.setString(1, String.valueOf(id));
+            preparedStatement.setObject(1, id);
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -120,7 +121,7 @@ public class AnimalDao extends AbstractDao<UUID, Animal> {
             preparedStatement.setDouble(4, animal.getWeight());
             preparedStatement.setDouble(5, animal.getHeight());
             preparedStatement.setDouble(6, animal.getSpeed());
-            preparedStatement.setString(7, String.valueOf(animal.getId()));
+            preparedStatement.setObject(7, animal.getId());
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
