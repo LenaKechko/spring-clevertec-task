@@ -2,6 +2,7 @@ package ru.clevertec.animal.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import ru.clevertec.animal.data.AnimalDto;
 import ru.clevertec.animal.entity.Animal;
 
@@ -41,12 +42,5 @@ public interface AnimalMapper {
      * @param animalDto информация для обновления
      * @return обновлённое животное
      */
-    @Mapping(target = "id", source = "animal.id")
-    @Mapping(target = "name", source = "animalDto.name")
-    @Mapping(target = "typeOfAnimal", source = "animalDto.typeOfAnimal")
-    @Mapping(target = "classOfAnimal", source = "animalDto.classOfAnimal")
-    @Mapping(target = "weight", source = "animalDto.weight")
-    @Mapping(target = "height", source = "animalDto.height")
-    @Mapping(target = "speed", source = "animalDto.speed")
-    Animal merge(Animal animal, AnimalDto animalDto);
+    Animal merge(@MappingTarget Animal animal, AnimalDto animalDto);
 }

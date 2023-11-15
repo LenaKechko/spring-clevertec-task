@@ -2,7 +2,8 @@ package ru.clevertec;
 
 import ru.clevertec.animal.data.AnimalDto;
 import ru.clevertec.animal.entity.Animal;
-import ru.clevertec.animal.validator.ObjectValidator;
+import ru.clevertec.animal.service.BaseService;
+import ru.clevertec.animal.service.impl.AnimalServiceImpl;
 
 import java.util.UUID;
 
@@ -16,7 +17,16 @@ public class Main {
 //        System.out.println(mapper.toAnimalDTO(animal).toString());
 //        System.out.println(mapper.toAnimal(animalDto).toString());
 //        System.out.println(mapper.merge(animal, animalDto).toString());
-        System.out.println(ObjectValidator.validate(animal));
-        System.out.println(ObjectValidator.validate(animalDto));
+//        System.out.println(ObjectValidator.validate(animal));
+//        System.out.println(ObjectValidator.validate(animalDto));
+        BaseService<AnimalDto> service = new AnimalServiceImpl();
+
+//
+//        System.out.println(service.get(UUID.fromString("657e186a-1a01-48a9-a839-116b81b85057")));
+//        service.create(animalDto);
+//        animalDto.setName("Страус");
+//        service.update(UUID.fromString("b357dd88-5ff7-4485-bc7e-da81cca3fa6e"), animalDto);
+//        service.delete(UUID.fromString("b357dd88-5ff7-4485-bc7e-da81cca3fa6e"));
+        System.out.println(service.getAll());
     }
 }
