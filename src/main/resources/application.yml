@@ -1,0 +1,2 @@
+sizeCache: 30
+algorithm: LRU #LFU
