@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
-import ru.clevertec.animal.validator.NumericFields;
-import ru.clevertec.animal.validator.TextFields;
+import ru.clevertec.animal.validator.annotation.NumericFields;
+import ru.clevertec.animal.validator.annotation.TextFields;
 
 /**
  * {@link ru.clevertec.animal.entity.Animal}

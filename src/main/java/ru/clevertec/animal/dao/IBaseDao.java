@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Кечко Елена
  */
-public interface BaseDao<K, T> {
+public interface IBaseDao<K, T> {
 
     /**
      * Метод для просмотра всех данных из БД

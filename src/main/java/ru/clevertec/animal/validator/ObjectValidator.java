@@ -1,6 +1,8 @@
 package ru.clevertec.animal.validator;
 
 import ru.clevertec.animal.exception.ValidatorException;
+import ru.clevertec.animal.validator.annotation.NumericFields;
+import ru.clevertec.animal.validator.annotation.TextFields;
 
 import java.lang.reflect.Field;
 import java.util.regex.Pattern;
