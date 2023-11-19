@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id "io.freefair.lombok" version "6.5.1"
+    id "io.freefair.aspectj.post-compile-weaving" version "8.4"
 }
 
 group = 'ru.clevertec'
@@ -19,6 +20,7 @@ ext {
     junitVersion = '5.9.2'
     jacksonVersion = '2.15.2'
     mapstructVersion = '1.5.5.Final'
+    aspectVersion = '1.9.19'
 }
 
 dependencies {
@@ -31,6 +33,10 @@ dependencies {
 
     implementation 'org.postgresql:postgresql:42.6.0'
     implementation 'org.yaml:snakeyaml:2.0'
+
+    implementation("org.aspectj:aspectjweaver:${aspectVersion}")
+    implementation("org.aspectj:aspectjtools:${aspectVersion}")
+    implementation("org.aspectj:aspectjrt:${aspectVersion}")
 
     testImplementation 'org.skyscreamer:jsonassert:1.5.0'
 

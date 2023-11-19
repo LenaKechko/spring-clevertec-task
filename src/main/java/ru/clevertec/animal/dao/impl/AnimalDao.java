@@ -1,15 +1,18 @@
 package ru.clevertec.animal.dao.impl;
 
 import ru.clevertec.animal.connectionDB.MyConnection;
-import ru.clevertec.animal.dao.BaseDao;
+import ru.clevertec.animal.dao.IBaseDao;
 import ru.clevertec.animal.entity.Animal;
+import ru.clevertec.animal.proxy.annotation.Delete;
+import ru.clevertec.animal.proxy.annotation.GetById;
+import ru.clevertec.animal.proxy.annotation.Put;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class AnimalDao implements BaseDao<UUID, Animal> {
+public class AnimalDao implements IBaseDao<UUID, Animal> {
 
     private final Connection connection = MyConnection.getConnectionDB();
 
@@ -63,6 +66,7 @@ public class AnimalDao implements BaseDao<UUID, Animal> {
     }
 
     @Override
+    @GetById
     public Animal findEntityById(UUID id) {
         Animal animal = null;
         try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ANIMAL_BY_ID)) {
@@ -84,6 +88,7 @@ public class AnimalDao implements BaseDao<UUID, Animal> {
     }
 
     @Override
+    @Delete
     public boolean delete(UUID id) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_ANIMAL_ID)) {
             preparedStatement.setObject(1, id);
@@ -96,6 +101,7 @@ public class AnimalDao implements BaseDao<UUID, Animal> {
     }
 
     @Override
+    @Put
     public boolean create(Animal animal) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_ANIMAL)) {
             preparedStatement.setString(1, animal.getName());
@@ -113,6 +119,7 @@ public class AnimalDao implements BaseDao<UUID, Animal> {
     }
 
     @Override
+    @Put
     public boolean update(Animal animal) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ANIMAL)) {
             preparedStatement.setString(1, animal.getName());

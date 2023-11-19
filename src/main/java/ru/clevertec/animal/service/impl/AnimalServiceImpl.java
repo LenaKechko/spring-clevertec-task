@@ -1,6 +1,6 @@
 package ru.clevertec.animal.service.impl;
 
-import ru.clevertec.animal.dao.BaseDao;
+import ru.clevertec.animal.dao.IBaseDao;
 import ru.clevertec.animal.dao.impl.AnimalDao;
 import ru.clevertec.animal.data.AnimalDto;
 import ru.clevertec.animal.entity.Animal;
@@ -8,16 +8,17 @@ import ru.clevertec.animal.exception.AnimalNotFoundException;
 import ru.clevertec.animal.exception.ValidatorException;
 import ru.clevertec.animal.mapper.AnimalMapper;
 import ru.clevertec.animal.mapper.AnimalMapperImpl;
-import ru.clevertec.animal.service.BaseService;
+import ru.clevertec.animal.service.IBaseService;
 import ru.clevertec.animal.validator.ObjectValidator;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class AnimalServiceImpl implements BaseService<AnimalDto> {
 
-    private final BaseDao<UUID, Animal> animalDao;
+public class AnimalServiceImpl implements IBaseService<AnimalDto> {
+
+    private final IBaseDao<UUID, Animal> animalDao;
     private final AnimalMapper mapper;
 
     public AnimalServiceImpl() {
@@ -60,7 +61,7 @@ public class AnimalServiceImpl implements BaseService<AnimalDto> {
      * @return идентификатор созданного продукта
      */
     @Override
-    public void create(AnimalDto animalDto) { /// void???
+    public void create(AnimalDto animalDto) {
         try {
             if (ObjectValidator.validate(animalDto)) {
                 animalDao.create(mapper.toAnimal(animalDto));
