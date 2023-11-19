@@ -1,4 +1,4 @@
-package ru.clevertec.animal.validator.util;
+package ru.clevertec.util;
 
 import lombok.Builder;
 import lombok.Data;
@@ -33,11 +33,11 @@ public class AnimalTestData {
     @Builder.Default
     private double speed = 40.0;
 
-    public Animal buildProduct() {
+    public Animal buildAnimal() {
         return new Animal(uuid, name, typeOfAnimal, classOfAnimal, weight, height, speed);
     }
 
-    public AnimalDto buildProductDto() {
+    public AnimalDto buildAnimalDto() {
         return new AnimalDto(name, typeOfAnimal, classOfAnimal, weight, height, speed);
     }
 }

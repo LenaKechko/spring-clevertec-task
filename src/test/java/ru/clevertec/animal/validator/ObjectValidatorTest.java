@@ -3,7 +3,7 @@ package ru.clevertec.animal.validator;
 import org.junit.jupiter.api.Test;
 import ru.clevertec.animal.data.AnimalDto;
 import ru.clevertec.animal.exception.ValidatorException;
-import ru.clevertec.animal.validator.util.AnimalTestData;
+import ru.clevertec.util.AnimalTestData;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,7 +13,7 @@ class ObjectValidatorTest {
     @Test
     void validateShouldReturnTrue() throws IllegalAccessException {
         // given
-        AnimalDto animalDto = AnimalTestData.builder().build().buildProductDto();
+        AnimalDto animalDto = AnimalTestData.builder().build().buildAnimalDto();
 
         // when-then
         assertTrue(ObjectValidator.validate(animalDto));
@@ -25,7 +25,7 @@ class ObjectValidatorTest {
         AnimalDto animalDto = AnimalTestData.builder()
                 .withTypeOfAnimal("")
                 .build()
-                .buildProductDto();
+                .buildAnimalDto();
 
         // when-then
         assertTrue(ObjectValidator.validate(animalDto));
@@ -37,127 +37,127 @@ class ObjectValidatorTest {
         AnimalDto animalDto = AnimalTestData.builder()
                 .withClassOfAnimal("")
                 .build()
-                .buildProductDto();
+                .buildAnimalDto();
 
         // when-then
         assertTrue(ObjectValidator.validate(animalDto));
     }
 
     @Test
-    void validateShouldThrowValidateExceptionWithoutName() throws IllegalAccessException {
+    void validateShouldThrowValidateExceptionWithoutName() {
         // given
         AnimalDto animalDto = AnimalTestData.builder()
                 .withName("")
                 .build()
-                .buildProductDto();
+                .buildAnimalDto();
 
         // when-then
         assertThrows(ValidatorException.class, () -> ObjectValidator.validate(animalDto));
     }
 
     @Test
-    void validateShouldThrowValidateExceptionWithBigName() throws IllegalAccessException {
+    void validateShouldThrowValidateExceptionWithBigName() {
         // given
         AnimalDto animalDto = AnimalTestData.builder()
                 .withName("Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
                 .build()
-                .buildProductDto();
+                .buildAnimalDto();
 
         // when-then
         assertThrows(ValidatorException.class, () -> ObjectValidator.validate(animalDto));
     }
 
     @Test
-    void validateShouldThrowValidateExceptionWithBigTypeOfAnimal() throws IllegalAccessException {
+    void validateShouldThrowValidateExceptionWithBigTypeOfAnimal() {
         // given
         AnimalDto animalDto = AnimalTestData.builder()
                 .withTypeOfAnimal("Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
                 .build()
-                .buildProductDto();
+                .buildAnimalDto();
 
         // when-then
         assertThrows(ValidatorException.class, () -> ObjectValidator.validate(animalDto));
     }
 
     @Test
-    void validateShouldThrowValidateExceptionWithBigClassOfAnimal() throws IllegalAccessException {
+    void validateShouldThrowValidateExceptionWithBigClassOfAnimal() {
         // given
         AnimalDto animalDto = AnimalTestData.builder()
                 .withClassOfAnimal("Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
                 .build()
-                .buildProductDto();
+                .buildAnimalDto();
 
         // when-then
         assertThrows(ValidatorException.class, () -> ObjectValidator.validate(animalDto));
     }
 
     @Test
-    void validateShouldThrowValidateExceptionWithZeroWeight() throws IllegalAccessException {
+    void validateShouldThrowValidateExceptionWithZeroWeight() {
         // given
         AnimalDto animalDto = AnimalTestData.builder()
                 .withWeight(0.0)
                 .build()
-                .buildProductDto();
+                .buildAnimalDto();
 
         // when-then
         assertThrows(ValidatorException.class, () -> ObjectValidator.validate(animalDto));
     }
 
     @Test
-    void validateShouldThrowValidateExceptionWithNegativeWeight() throws IllegalAccessException {
+    void validateShouldThrowValidateExceptionWithNegativeWeight() {
         // given
         AnimalDto animalDto = AnimalTestData.builder()
                 .withWeight(-4.0)
                 .build()
-                .buildProductDto();
+                .buildAnimalDto();
 
         // when-then
         assertThrows(ValidatorException.class, () -> ObjectValidator.validate(animalDto));
     }
 
     @Test
-    void validateShouldThrowValidateExceptionWithZeroHeight() throws IllegalAccessException {
+    void validateShouldThrowValidateExceptionWithZeroHeight() {
         // given
         AnimalDto animalDto = AnimalTestData.builder()
                 .withHeight(0.0)
                 .build()
-                .buildProductDto();
+                .buildAnimalDto();
 
         // when-then
         assertThrows(ValidatorException.class, () -> ObjectValidator.validate(animalDto));
     }
 
     @Test
-    void validateShouldThrowValidateExceptionWithNegativeHeight() throws IllegalAccessException {
+    void validateShouldThrowValidateExceptionWithNegativeHeight() {
         // given
         AnimalDto animalDto = AnimalTestData.builder()
                 .withHeight(-4.0)
                 .build()
-                .buildProductDto();
+                .buildAnimalDto();
 
         // when-then
         assertThrows(ValidatorException.class, () -> ObjectValidator.validate(animalDto));
     }
 
     @Test
-    void validateShouldThrowValidateExceptionWithZeroSpeed() throws IllegalAccessException {
+    void validateShouldThrowValidateExceptionWithZeroSpeed() {
         // given
         AnimalDto animalDto = AnimalTestData.builder()
                 .withSpeed(0.0)
                 .build()
-                .buildProductDto();
+                .buildAnimalDto();
 
         // when-then
         assertThrows(ValidatorException.class, () -> ObjectValidator.validate(animalDto));
     }
 
     @Test
-    void validateShouldThrowValidateExceptionWithNegativeSpeed() throws IllegalAccessException {
+    void validateShouldThrowValidateExceptionWithNegativeSpeed() {
         // given
         AnimalDto animalDto = AnimalTestData.builder()
                 .withSpeed(-4.0)
                 .build()
-                .buildProductDto();
+                .buildAnimalDto();
 
         // when-then
         assertThrows(ValidatorException.class, () -> ObjectValidator.validate(animalDto));

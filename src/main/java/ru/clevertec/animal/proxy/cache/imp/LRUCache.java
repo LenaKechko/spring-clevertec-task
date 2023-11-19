@@ -52,7 +52,7 @@ public class LRUCache<K, V> implements IBaseCache<K, V> {
         cacheMap.remove(key);
     }
 
-    private static class Node<K, V> {
+    protected static class Node<K, V> {
 
         @Getter
         K key;

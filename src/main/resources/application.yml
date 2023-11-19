@@ -1,2 +1,2 @@
-sizeCache: 30
+sizeCache: 3
 algorithm: LRU #LFU
