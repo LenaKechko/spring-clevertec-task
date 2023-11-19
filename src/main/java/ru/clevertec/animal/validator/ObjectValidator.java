@@ -14,16 +14,16 @@ public class ObjectValidator {
         for (Field field : objectClass.getDeclaredFields()) {
             field.setAccessible(true);
             if (field.isAnnotationPresent(NumericFields.class)) {
-                return validateNumeric(field, object);
+                validateNumeric(field, object);
             }
             if (field.isAnnotationPresent(TextFields.class)) {
-                return validateText(field, object);
+                validateText(field, object);
             }
         }
         return true;
     }
 
-    private static boolean validateNumeric(Field field, Object object) throws IllegalAccessException {
+    private static void validateNumeric(Field field, Object object) throws IllegalAccessException {
         NumericFields numericFieldsAnnotation = field.getAnnotation(NumericFields.class);
         double fieldValue = field.getDouble(object);
 
@@ -33,10 +33,9 @@ public class ObjectValidator {
         if (fieldValue < min || fieldValue > max) {
             throw new ValidatorException(field);
         }
-        return true;
     }
 
-    private static boolean validateText(Field field, Object object) throws IllegalAccessException {
+    private static void validateText(Field field, Object object) throws IllegalAccessException {
         TextFields textFieldsAnnotation = field.getAnnotation(TextFields.class);
         String fieldValue = (String) field.get(object);
         Pattern pattern = Pattern.compile(
@@ -45,6 +44,5 @@ public class ObjectValidator {
         if (!pattern.matcher(fieldValue).matches()) {
             throw new ValidatorException(field);
         }
-        return true;
     }
 }
