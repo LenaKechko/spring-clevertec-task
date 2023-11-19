@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 public @interface TextFields {
     int minLength() default 0;
 
-    int maxLength() default 30;
+    int maxLength() default 15;
 }

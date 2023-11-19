@@ -83,11 +83,6 @@ public class LFUCache<K, V> implements IBaseCache<K, V> {
                         node.next = temp;
                         node.prev = temp.prev;
                         temp.prev = node;
-//                        node.next = temp;
-//                        node.prev = temp.prev;
-//                        temp.prev.next = node;
-//                        node.prev = temp.prev;
-
                         break;
                     }
                 } else {
@@ -108,7 +103,7 @@ public class LFUCache<K, V> implements IBaseCache<K, V> {
 
     }
 
-    private static class Node<K, V> {
+    protected static class Node<K, V> {
 
         K key;
         V value;
