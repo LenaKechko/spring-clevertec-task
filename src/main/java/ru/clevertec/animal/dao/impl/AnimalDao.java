@@ -10,6 +10,7 @@ import ru.clevertec.animal.proxy.annotation.Put;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class AnimalDao implements IBaseDao<UUID, Animal> {
@@ -20,10 +21,16 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
      * Запрос на вывод всех данных из таблицы
      */
     String SQL_SELECT_ALL_ANIMALS = "SELECT * FROM animals";
+
     /**
      * Запрос на вывод данных по известному id
      */
     String SQL_SELECT_ANIMAL_BY_ID = "SELECT * FROM animals WHERE id = ?";
+
+    /**
+     * Запрос на id по известным данным
+     */
+    String SQL_SELECT_ID_BY_ANIMAL = "SELECT id FROM animals WHERE name = ?, type_of_animal = ?, class_of_animal = ?, weight = ?, height = ?, speed = ?";
 
     /**
      * Запрос на удаление данных из таблицы БД по известному id
@@ -67,7 +74,7 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
 
     @Override
     @GetById
-    public Animal findEntityById(UUID id) {
+    public Optional<Animal> findEntityById(UUID id) {
         Animal animal = null;
         try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ANIMAL_BY_ID)) {
             statement.setObject(1, id);
@@ -84,7 +91,32 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return animal;
+        return Optional.ofNullable(animal);
+    }
+
+    /**
+     * Метод для нахождение id из БД по сущности
+     *
+     * @param animal сущность
+     * @return идентификатор сущности
+     */
+    public UUID findIdByEntity(Animal animal) {
+        UUID id = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_ID_BY_ANIMAL)) {
+            preparedStatement.setString(1, animal.getName());
+            preparedStatement.setString(2, animal.getTypeOfAnimal());
+            preparedStatement.setString(3, animal.getClassOfAnimal());
+            preparedStatement.setDouble(4, animal.getWeight());
+            preparedStatement.setDouble(5, animal.getHeight());
+            preparedStatement.setDouble(6, animal.getSpeed());
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                id = (UUID) rs.getObject("id");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return id;
     }
 
     @Override

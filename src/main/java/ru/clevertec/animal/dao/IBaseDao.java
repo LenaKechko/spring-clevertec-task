@@ -1,6 +1,7 @@
 package ru.clevertec.animal.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Интерфейс Предоставляет список страндартных методов
@@ -25,7 +26,15 @@ public interface IBaseDao<K, T> {
      * @param id объекта
      * @return объект сущности
      */
-    T findEntityById(K id);
+    Optional<T> findEntityById(K id);
+
+    /**
+     * Метод для нахождение id из БД по сущности
+     *
+     * @param entity сущность
+     * @return идентификатор сущности
+     */
+    K findIdByEntity(T entity);
 
     /**
      * Метод для удаления сущности из БД по id

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-
 public class AnimalServiceImpl implements IBaseService<AnimalDto> {
 
     private final IBaseDao<UUID, Animal> animalDao;
@@ -35,11 +34,9 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
      */
     @Override
     public AnimalDto get(UUID uuid) {
-        try {
-            return mapper.toAnimalDTO(animalDao.findEntityById(uuid));
-        } catch (Exception e) {
-            throw new AnimalNotFoundException(uuid);
-        }
+        return mapper.toAnimalDTO(
+                animalDao.findEntityById(uuid)
+                        .orElseThrow(() -> new AnimalNotFoundException(uuid)));
     }
 
     /**
@@ -61,11 +58,17 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
      * @return идентификатор созданного продукта
      */
     @Override
-    public void create(AnimalDto animalDto) {
+    public UUID create(AnimalDto animalDto) {
         try {
+            boolean isCreate = false;
+            Animal animalToSave = mapper.toAnimal(animalDto);
             if (ObjectValidator.validate(animalDto)) {
-                animalDao.create(mapper.toAnimal(animalDto));
+                isCreate = animalDao.create(animalToSave);
             }
+            if (isCreate) {
+                return animalDao.findIdByEntity(animalToSave);
+            }
+            return null;
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -81,15 +84,13 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
     public void update(UUID uuid, AnimalDto animalDto) {
         try {
             if (ObjectValidator.validate(animalDto)) {
-                Animal animalUpdate = animalDao.findEntityById(uuid);
+                Animal animalUpdate = animalDao.findEntityById(uuid).orElseThrow(() -> new AnimalNotFoundException(uuid));
                 animalDao.update(mapper.merge(animalUpdate, animalDto));
             }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
         } catch (ValidatorException e) {
             System.out.println(e.getMessage());
-        } catch (Exception e) {
-            throw new AnimalNotFoundException(uuid);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 
