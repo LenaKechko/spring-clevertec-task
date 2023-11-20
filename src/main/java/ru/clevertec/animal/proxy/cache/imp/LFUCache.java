@@ -26,7 +26,7 @@ public class LFUCache<K, V> implements IBaseCache<K, V> {
         removeNode(node);
         node.frequency += 1;
         addNode(node);
-        return Optional.of(node.value);
+        return Optional.ofNullable(node.value);
     }
 
     @Override

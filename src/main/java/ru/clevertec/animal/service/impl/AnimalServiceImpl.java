@@ -68,7 +68,7 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
             if (isCreate) {
                 return animalDao.findIdByEntity(animalToSave);
             }
-            return null;
+            throw new RuntimeException();
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }

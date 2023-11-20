@@ -25,7 +25,7 @@ public class LRUCache<K, V> implements IBaseCache<K, V> {
         if (node == null)
             return Optional.empty();
         node.timeLastUsing = LocalDateTime.now();
-        return Optional.of(node.value);
+        return Optional.ofNullable(node.value);
     }
 
     @Override

@@ -1,5 +1,8 @@
 package ru.clevertec.animal.dao;
 
+import ru.clevertec.animal.connectionDB.MyConnection;
+
+import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,4 +62,5 @@ public interface IBaseDao<K, T> {
      * @return true/false - успешное выполнение операции или нет
      */
     boolean update(T entity);
+
 }

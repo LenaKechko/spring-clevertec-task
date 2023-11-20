@@ -30,7 +30,10 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
     /**
      * Запрос на id по известным данным
      */
-    String SQL_SELECT_ID_BY_ANIMAL = "SELECT id FROM animals WHERE name = ?, type_of_animal = ?, class_of_animal = ?, weight = ?, height = ?, speed = ?";
+    String SQL_SELECT_ID_BY_ANIMAL = """
+            SELECT id FROM animals WHERE name = ? and type_of_animal = ? and
+             class_of_animal = ? and weight = ? and height = ? and speed = ?
+            """;
 
     /**
      * Запрос на удаление данных из таблицы БД по известному id
@@ -65,7 +68,6 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
                 double speed = rs.getDouble(7);
                 animals.add(new Animal(id, name, typeOfAnimal, classOfAnimal, weight, height, speed));
             }
-            animals.forEach(System.out::println);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -100,6 +102,7 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
      * @param animal сущность
      * @return идентификатор сущности
      */
+    @Override
     public UUID findIdByEntity(Animal animal) {
         UUID id = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_ID_BY_ANIMAL)) {

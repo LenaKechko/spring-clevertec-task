@@ -3,6 +3,7 @@ package ru.clevertec.animal.proxy;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import ru.clevertec.animal.entity.Animal;
+import ru.clevertec.animal.exception.AnimalNotFoundException;
 import ru.clevertec.animal.proxy.cache.IBaseCache;
 import ru.clevertec.animal.proxy.cache.imp.LFUCache;
 import ru.clevertec.animal.proxy.cache.imp.LRUCache;
@@ -26,14 +27,13 @@ public class CacheProxyAspect {
     }
 
     @Around("@annotation(ru.clevertec.animal.proxy.annotation.GetById) && args(id)")
-    public Animal get(ProceedingJoinPoint joinPoint, UUID id) throws Throwable {
-        System.out.println("Hi!");
+    public Optional<Animal> get(ProceedingJoinPoint joinPoint, UUID id) throws Throwable {
         Optional<Animal> result = cache.get(id);
         if (result.isPresent())
-            return result.get();
-        Animal obj = (Animal) joinPoint.proceed();
+            return result;
+        Animal obj = ((Optional<Animal>) joinPoint.proceed()).orElseThrow(() -> new AnimalNotFoundException(id));
         cache.put(obj.getId(), obj);
-        return obj;
+        return Optional.of(obj);
     }
 
     @After("@annotation(ru.clevertec.animal.proxy.annotation.Put) && args(animal)")
