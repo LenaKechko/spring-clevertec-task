@@ -2,11 +2,9 @@ package ru.clevertec.util;
 
 import lombok.Builder;
 import lombok.Data;
-import ru.clevertec.animal.connectionDB.MyConnection;
 import ru.clevertec.animal.data.AnimalDto;
 import ru.clevertec.animal.entity.Animal;
 
-import java.sql.Connection;
 import java.util.UUID;
 
 @Data
