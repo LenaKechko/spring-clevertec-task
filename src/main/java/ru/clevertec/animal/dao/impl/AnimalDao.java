@@ -53,6 +53,11 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
             "UPDATE animals SET name = ?, type_of_animal = ?, class_of_animal = ?, weight = ?, height = ?, speed = ? " +
                     "WHERE id = ?";
 
+    /**
+     * Метод для просмотра всех данных из БД
+     *
+     * @return List объектов сущности
+     */
     @Override
     public List<Animal> findAll() {
         List<Animal> animals = new ArrayList<>();
@@ -74,6 +79,12 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
         return animals;
     }
 
+    /**
+     * Метод для нахождение сущности из БД по id
+     *
+     * @param id объекта
+     * @return Optinal объект сущности
+     */
     @Override
     @GetById
     public Optional<Animal> findEntityById(UUID id) {
@@ -122,19 +133,28 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
         return id;
     }
 
+    /**
+     * Метод для удаления сущности из БД по id
+     *
+     * @param id объекта
+     */
     @Override
     @Delete
-    public boolean delete(UUID id) {
+    public void delete(UUID id) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_ANIMAL_ID)) {
             preparedStatement.setObject(1, id);
             preparedStatement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return false;
     }
 
+    /**
+     * Метод для занесения сущности в БД
+     *
+     * @param animal сущность
+     * @return true/false - успешное выполнение операции или нет
+     */
     @Override
     @Put
     public boolean create(Animal animal) {
@@ -153,9 +173,14 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
         return false;
     }
 
+    /**
+     * Метод для изменения сущности в БД
+     *
+     * @param animal сущность
+     */
     @Override
     @Put
-    public boolean update(Animal animal) {
+    public void update(Animal animal) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ANIMAL)) {
             preparedStatement.setString(1, animal.getName());
             preparedStatement.setString(2, animal.getTypeOfAnimal());
@@ -165,10 +190,8 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
             preparedStatement.setDouble(6, animal.getSpeed());
             preparedStatement.setObject(7, animal.getId());
             preparedStatement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return false;
     }
 }

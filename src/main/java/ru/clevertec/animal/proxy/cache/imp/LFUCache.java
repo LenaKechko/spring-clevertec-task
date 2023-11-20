@@ -6,11 +6,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Класс для реализации  кэша по алгоритмы LFU
+ *
+ * @author Кечко Елена
+ */
 public class LFUCache<K, V> implements IBaseCache<K, V> {
 
+    /**
+     * Поле размера кэша
+     */
     private final Integer capacity;
+    /**
+     * Содержимое кэша
+     */
     private final Map<K, Node<K, V>> cacheMap;
+    /**
+     * Голова кэша, здесь находится самый редко используемый элемент
+     */
     Node<K, V> head;
+    /**
+     * Хвост кэша, здесь находится самый часто используемый элемент
+     */
     Node<K, V> tail;
 
     public LFUCache(Integer capacity) {
@@ -18,6 +35,12 @@ public class LFUCache<K, V> implements IBaseCache<K, V> {
         cacheMap = new HashMap<>();
     }
 
+    /**
+     * Метод нахождения элемента в кэше по ключу
+     *
+     * @param key сущность
+     * @return Optional сущности, если элемента нет в кэше - Optinal.empty
+     */
     @Override
     public Optional<V> get(K key) {
         Node<K, V> node = cacheMap.get(key);
@@ -29,6 +52,12 @@ public class LFUCache<K, V> implements IBaseCache<K, V> {
         return Optional.ofNullable(node.value);
     }
 
+    /**
+     * Метод сохранения/изменения элемента в кэше по ключу
+     *
+     * @param key   сущности
+     * @param value значение сущности
+     */
     @Override
     public void put(K key, V value) {
         if (cacheMap.containsKey(key)) {
@@ -48,6 +77,11 @@ public class LFUCache<K, V> implements IBaseCache<K, V> {
         }
     }
 
+    /**
+     * Метод удаления элемента из кэше по ключу
+     *
+     * @param key сущности
+     */
     @Override
     public void remove(K key) {
         Node<K, V> node = cacheMap.get(key);
@@ -55,6 +89,11 @@ public class LFUCache<K, V> implements IBaseCache<K, V> {
         cacheMap.remove(key);
     }
 
+    /**
+     * Метод удаления элемента из списка
+     *
+     * @param node элемент двунаправленного списка
+     */
     private void removeNode(Node<K, V> node) {
         if (node.prev != null) {
             node.prev.next = node.next;
@@ -69,6 +108,11 @@ public class LFUCache<K, V> implements IBaseCache<K, V> {
         }
     }
 
+    /**
+     * Метод добавления элемента в списка
+     *
+     * @param node элемент двунаправленного списка
+     */
     private void addNode(Node<K, V> node) {
         if (tail != null && head != null) {
             Node<K, V> temp = head;
@@ -102,6 +146,10 @@ public class LFUCache<K, V> implements IBaseCache<K, V> {
         }
 
     }
+
+    /**
+     * Класс для организации двунаправленного списка
+     */
 
     protected static class Node<K, V> {
 

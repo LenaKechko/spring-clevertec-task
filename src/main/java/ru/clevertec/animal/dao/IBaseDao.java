@@ -1,8 +1,5 @@
 package ru.clevertec.animal.dao;
 
-import ru.clevertec.animal.connectionDB.MyConnection;
-
-import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +24,7 @@ public interface IBaseDao<K, T> {
      * Метод для нахождение сущности из БД по id
      *
      * @param id объекта
-     * @return объект сущности
+     * @return Optinal объект сущности
      */
     Optional<T> findEntityById(K id);
 
@@ -43,14 +40,13 @@ public interface IBaseDao<K, T> {
      * Метод для удаления сущности из БД по id
      *
      * @param id объекта
-     * @return true/false - успешное выполнение операции или нет
      */
-    boolean delete(K id);
+    void delete(K id);
 
     /**
      * Метод для занесения сущности в БД
      *
-     * @param entity
+     * @param entity сущность
      * @return true/false - успешное выполнение операции или нет
      */
     boolean create(T entity);
@@ -58,9 +54,8 @@ public interface IBaseDao<K, T> {
     /**
      * Метод для изменения сущности в БД
      *
-     * @param entity
-     * @return true/false - успешное выполнение операции или нет
+     * @param entity сущность
      */
-    boolean update(T entity);
+    void update(T entity);
 
 }

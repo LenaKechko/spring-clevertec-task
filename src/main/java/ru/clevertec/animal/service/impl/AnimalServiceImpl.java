@@ -15,9 +15,21 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Класс-сервис для работы с crud-операциями
+ *
+ * @author Кечко Елена
+ */
+
 public class AnimalServiceImpl implements IBaseService<AnimalDto> {
 
+    /**
+     * Поле для работы с dao
+     */
     private final IBaseDao<UUID, Animal> animalDao;
+    /**
+     * Поле для работы с mapper'ом
+     */
     private final AnimalMapper mapper;
 
     public AnimalServiceImpl() {
@@ -26,10 +38,10 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
     }
 
     /**
-     * ищет продукт по идентификатору
+     * ищет животное по идентификатору
      *
-     * @param uuid идентификатор продукта
-     * @return найденный продукт
+     * @param uuid идентификатор животное
+     * @return найденное животное
      * @throws AnimalNotFoundException если не найден
      */
     @Override
@@ -52,10 +64,11 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
     }
 
     /**
-     * Создаёт новый продукт из DTO
+     * Создаёт новое животное из DTO
      *
      * @param animalDto DTO с информацией о создании
-     * @return идентификатор созданного продукта
+     * @return идентификатор созданного животного
+     * @throws AnimalNotFoundException если животное не было сохранено
      */
     @Override
     public UUID create(AnimalDto animalDto) {
@@ -68,16 +81,16 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
             if (isCreate) {
                 return animalDao.findIdByEntity(animalToSave);
             }
-            throw new RuntimeException();
-        } catch (IllegalAccessException e) {
+            throw new AnimalNotFoundException(null);
+        } catch (IllegalAccessException | ValidatorException e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * Обновляет уже существующий продукт из информации полученной в DTO
+     * Обновляет уже существующее животное из информации полученной в DTO
      *
-     * @param uuid      идентификатор продукта для обновления
+     * @param uuid      идентификатор животного для обновления
      * @param animalDto DTO с информацией об обновлении
      */
     @Override
@@ -95,9 +108,9 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
     }
 
     /**
-     * Удаляет существующий продукт
+     * Удаляет существующий животного
      *
-     * @param uuid идентификатор продукта для удаления
+     * @param uuid идентификатор животного для удаления
      */
     @Override
     public void delete(UUID uuid) {

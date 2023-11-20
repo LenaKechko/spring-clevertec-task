@@ -9,9 +9,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Класс для реализации  кэша по алгоритмы LRU
+ *
+ * @author Кечко Елена
+ */
 public class LRUCache<K, V> implements IBaseCache<K, V> {
 
+    /**
+     * Поле размера кэша
+     */
     private final Integer capacity;
+    /**
+     * Содержимое кэша
+     */
     private final Map<K, Node<K, V>> cacheMap;
 
     public LRUCache(Integer capacity) {
@@ -19,6 +30,12 @@ public class LRUCache<K, V> implements IBaseCache<K, V> {
         cacheMap = new HashMap<>();
     }
 
+    /**
+     * Метод нахождения элемента в кэше по ключу
+     *
+     * @param key сущность
+     * @return Optional сущности, если элемента нет в кэше - Optinal.empty
+     */
     @Override
     public Optional<V> get(K key) {
         Node<K, V> node = cacheMap.get(key);
@@ -28,6 +45,12 @@ public class LRUCache<K, V> implements IBaseCache<K, V> {
         return Optional.ofNullable(node.value);
     }
 
+    /**
+     * Метод сохранения/изменения элемента в кэше по ключу
+     *
+     * @param key   сущности
+     * @param value значение сущности
+     */
     @Override
     public void put(K key, V value) {
         if (cacheMap.containsKey(key)) {
@@ -47,11 +70,20 @@ public class LRUCache<K, V> implements IBaseCache<K, V> {
         }
     }
 
+    /**
+     * Метод удаления элемента из кэше по ключу
+     *
+     * @param key сущности
+     */
     @Override
     public void remove(K key) {
         cacheMap.remove(key);
     }
 
+    /**
+     * Класс для элементов соответствующих ключу в кэше.
+     * Содержат последнее время обращение к элементу
+     */
     protected static class Node<K, V> {
 
         @Getter

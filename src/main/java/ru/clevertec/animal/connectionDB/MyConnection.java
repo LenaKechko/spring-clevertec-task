@@ -8,8 +8,6 @@ import java.util.ResourceBundle;
 
 public class MyConnection {
 
-    static String databaseName = "";
-
     /**
      * Метод выдающий connection к базе данных
      *
@@ -23,8 +21,7 @@ public class MyConnection {
             int port = Integer.parseInt(resourceBundle.getString("db.port"));
             String user = resourceBundle.getString("db.user");
             String password = resourceBundle.getString("db.password");
-            if (databaseName.isEmpty())
-                databaseName = resourceBundle.getString("db.databaseName");
+            String databaseName = resourceBundle.getString("db.databaseName");
             PGSimpleDataSource dataSource = new PGSimpleDataSource();
             dataSource.setServerNames(new String[]{serverName});
             dataSource.setPortNumbers(new int[]{port});
@@ -37,7 +34,4 @@ public class MyConnection {
         }
     }
 
-    public static void setDatabaseName(String name) {
-        databaseName = name;
-    }
 }

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.clevertec.animal.connectionDB.MyConnection;
 import ru.clevertec.animal.dao.IBaseDao;
 import ru.clevertec.animal.data.AnimalDto;
 import ru.clevertec.animal.entity.Animal;
@@ -16,7 +15,6 @@ import ru.clevertec.animal.mapper.AnimalMapper;
 import ru.clevertec.util.AnimalTestData;
 import ru.clevertec.util.AnimalTestDataForService;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.UUID;
 
