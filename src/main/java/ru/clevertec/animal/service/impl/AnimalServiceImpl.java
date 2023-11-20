@@ -15,10 +15,21 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Класс-сервис для работы с crud-операциями
+ *
+ * @author Кечко Елена
+ */
 
 public class AnimalServiceImpl implements IBaseService<AnimalDto> {
 
+    /**
+     * Поле для работы с dao
+     */
     private final IBaseDao<UUID, Animal> animalDao;
+    /**
+     * Поле для работы с mapper'ом
+     */
     private final AnimalMapper mapper;
 
     public AnimalServiceImpl() {
@@ -27,19 +38,17 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
     }
 
     /**
-     * ищет продукт по идентификатору
+     * ищет животное по идентификатору
      *
-     * @param uuid идентификатор продукта
-     * @return найденный продукт
+     * @param uuid идентификатор животное
+     * @return найденное животное
      * @throws AnimalNotFoundException если не найден
      */
     @Override
     public AnimalDto get(UUID uuid) {
-        try {
-            return mapper.toAnimalDTO(animalDao.findEntityById(uuid));
-        } catch (Exception e) {
-            throw new AnimalNotFoundException(uuid);
-        }
+        return mapper.toAnimalDTO(
+                animalDao.findEntityById(uuid)
+                        .orElseThrow(() -> new AnimalNotFoundException(uuid)));
     }
 
     /**
@@ -55,48 +64,53 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
     }
 
     /**
-     * Создаёт новый продукт из DTO
+     * Создаёт новое животное из DTO
      *
      * @param animalDto DTO с информацией о создании
-     * @return идентификатор созданного продукта
+     * @return идентификатор созданного животного
+     * @throws AnimalNotFoundException если животное не было сохранено
      */
     @Override
-    public void create(AnimalDto animalDto) {
+    public UUID create(AnimalDto animalDto) {
         try {
+            boolean isCreate = false;
+            Animal animalToSave = mapper.toAnimal(animalDto);
             if (ObjectValidator.validate(animalDto)) {
-                animalDao.create(mapper.toAnimal(animalDto));
+                isCreate = animalDao.create(animalToSave);
             }
-        } catch (IllegalAccessException e) {
+            if (isCreate) {
+                return animalDao.findIdByEntity(animalToSave);
+            }
+            throw new AnimalNotFoundException(null);
+        } catch (IllegalAccessException | ValidatorException e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * Обновляет уже существующий продукт из информации полученной в DTO
+     * Обновляет уже существующее животное из информации полученной в DTO
      *
-     * @param uuid      идентификатор продукта для обновления
+     * @param uuid      идентификатор животного для обновления
      * @param animalDto DTO с информацией об обновлении
      */
     @Override
     public void update(UUID uuid, AnimalDto animalDto) {
         try {
             if (ObjectValidator.validate(animalDto)) {
-                Animal animalUpdate = animalDao.findEntityById(uuid);
+                Animal animalUpdate = animalDao.findEntityById(uuid).orElseThrow(() -> new AnimalNotFoundException(uuid));
                 animalDao.update(mapper.merge(animalUpdate, animalDto));
             }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
         } catch (ValidatorException e) {
             System.out.println(e.getMessage());
-        } catch (Exception e) {
-            throw new AnimalNotFoundException(uuid);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 
     /**
-     * Удаляет существующий продукт
+     * Удаляет существующий животного
      *
-     * @param uuid идентификатор продукта для удаления
+     * @param uuid идентификатор животного для удаления
      */
     @Override
     public void delete(UUID uuid) {
