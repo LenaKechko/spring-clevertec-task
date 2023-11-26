@@ -50,4 +50,14 @@ public class AnimalDto {
      */
     @NumericFields
     private double speed;
+
+    @Override
+    public String toString() {
+        return "Имя животного: " + name + "\n" +
+                "Тип животного: " + typeOfAnimal + "\n" +
+                "Класс животного: " + classOfAnimal + "\n" +
+                "Вес: " + weight + "\n" +
+                "Высота: " + height + "\n" +
+                "Скорость: " + speed + "\n";
+    }
 }

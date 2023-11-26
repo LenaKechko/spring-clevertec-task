@@ -22,6 +22,7 @@ ext {
     mapstructVersion = '1.5.5.Final'
     aspectVersion = '1.9.19'
     mockitoVersion = '5.6.0'
+    itextpftVersion = '7.2.5'
 }
 
 dependencies {
@@ -39,6 +40,11 @@ dependencies {
     implementation("org.aspectj:aspectjtools:${aspectVersion}")
     implementation("org.aspectj:aspectjrt:${aspectVersion}")
 
+    implementation group: 'com.itextpdf', name: 'kernel', version: "${itextpftVersion}"
+    implementation group: 'com.itextpdf', name: 'layout', version: "${itextpftVersion}"
+    implementation group: 'com.itextpdf', name: 'io', version: "${itextpftVersion}"
+
+
     testImplementation 'org.skyscreamer:jsonassert:1.5.0'
 
     testImplementation("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
@@ -47,6 +53,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
+
+compileJava.options.encoding = 'UTF-8'
 
 test {
     useJUnitPlatform()
