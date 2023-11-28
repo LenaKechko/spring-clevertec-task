@@ -2,8 +2,9 @@ package ru.clevertec.animal.proxy.cache.imp;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.clevertec.animal.entity.Animal;
-import ru.clevertec.animal.proxy.cache.IBaseCache;
+import ru.clevertec.entity.Animal;
+import ru.clevertec.proxy.cache.IBaseCache;
+import ru.clevertec.proxy.cache.imp.LRUCache;
 import ru.clevertec.util.AnimalTestData;
 
 import java.lang.reflect.Field;

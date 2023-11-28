@@ -1,9 +1,10 @@
 package ru.clevertec.animal.validator;
 
 import org.junit.jupiter.api.Test;
-import ru.clevertec.animal.data.AnimalDto;
-import ru.clevertec.animal.exception.ValidatorException;
+import ru.clevertec.data.AnimalDto;
+import ru.clevertec.exception.ValidatorException;
 import ru.clevertec.util.AnimalTestData;
+import ru.clevertec.validator.ObjectValidator;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;

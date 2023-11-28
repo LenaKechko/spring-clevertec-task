@@ -1,8 +1,8 @@
 package ru.clevertec;
 
-import ru.clevertec.animal.data.AnimalDto;
-import ru.clevertec.animal.service.IBaseService;
-import ru.clevertec.animal.service.impl.AnimalServiceImpl;
+import ru.clevertec.data.AnimalDto;
+import ru.clevertec.service.IBaseService;
+import ru.clevertec.service.impl.AnimalServiceImpl;
 import ru.clevertec.writer.Writer;
 import ru.clevertec.writer.impl.WriterPdf;
 
