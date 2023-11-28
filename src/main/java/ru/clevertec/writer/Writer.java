@@ -1,26 +1,35 @@
 package ru.clevertec.writer;
 
+/**
+ * Класс для вызова соответствующего класса,
+ * осуществляющего запись в файл
+ *
+ * @author Лена Кечко
+ * */
+
 public class Writer<T> {
+
     /**
      * Поле типа интерфейса
      */
     private final IWriter<T> writer;
 
     /**
-     * Конструктор иниацилизующий поле класса
+     * Конструктор иниацилизующий поле класса в зависимости есть шаблон или нет
      *
-     * @param writer объект типа реализующий интерфейс IWriter
+     * @param writer отвечает за тип файла, в который будем записывать
      */
-    public Writer(IWriter writer) {
+    public Writer(IWriter<T> writer) {
         this.writer = writer;
     }
 
     /**
      * Метод запускающий запись в файлы различного типа
      *
-     * @param entity сущность для записи
+     * @param caption заголовок содержания документа
+     * @param entity  сущность для записи
      */
-    public void runWriter(String text, T entity) {
-        writer.createFile(text, entity);
+    public void runWriter(String caption, T entity) {
+        writer.createFile(caption, entity);
     }
 }

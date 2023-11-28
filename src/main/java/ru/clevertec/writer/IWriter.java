@@ -2,5 +2,7 @@ package ru.clevertec.writer;
 
 public interface IWriter<T> {
 
-    void createFile(String text, T entity);
+    String DEST_PATH = "printInfo//print";
+
+    void createFile(String caption, T entity);
 }
