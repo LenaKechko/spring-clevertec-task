@@ -90,6 +90,7 @@ public class LRUCache<K, V> implements IBaseCache<K, V> {
         K key;
         @Getter
         V value;
+        @Getter
         LocalDateTime timeLastUsing;
 
         public Node(K key, V value, LocalDateTime timeLastUsing) {

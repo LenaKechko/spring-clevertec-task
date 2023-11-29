@@ -1,6 +1,5 @@
 package ru.clevertec.service.impl;
 
-import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +12,6 @@ import ru.clevertec.entity.Animal;
 import ru.clevertec.exception.AnimalNotFoundException;
 import ru.clevertec.exception.ValidatorException;
 import ru.clevertec.mapper.AnimalMapper;
-import ru.clevertec.service.impl.AnimalServiceImpl;
 import ru.clevertec.util.AnimalTestData;
 import ru.clevertec.util.AnimalTestDataForService;
 
