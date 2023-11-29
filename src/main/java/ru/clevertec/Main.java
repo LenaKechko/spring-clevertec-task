@@ -18,8 +18,9 @@ public class Main {
         AnimalDto animalDto = new AnimalDto("Animal", "type", "class", 1000.0, 1.5, 40.0);
         System.out.println(animalDto);
         UUID uuid = service.create(animalDto);
-        Writer<AnimalDto> writer = new Writer<>(new WriterPdf<>());
-        writer.runWriter("Информация по животному с кодом: " + uuid, animalDto);
+        System.out.println(service.get(uuid));
+//        Writer<AnimalDto> writer = new Writer<>(new WriterPdf<>());
+//        writer.runWriter("Информация по животному с кодом: " + uuid, animalDto);
 
 //        System.out.println("--------Содержамое таблицы базы данных-------------");
 //        service.getAll()

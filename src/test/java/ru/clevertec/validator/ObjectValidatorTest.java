@@ -1,4 +1,4 @@
-package ru.clevertec.animal.validator;
+package ru.clevertec.validator;
 
 import org.junit.jupiter.api.Test;
 import ru.clevertec.data.AnimalDto;

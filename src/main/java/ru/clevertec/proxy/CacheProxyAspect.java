@@ -46,7 +46,7 @@ public class CacheProxyAspect {
      * @param id        идентификатор сущности
      * @return Optinal элемент, если найден, в противном случает - Optinal.empty
      */
-    @Around("@annotation(ru.clevertec.animal.proxy.annotation.GetById) && args(id)")
+    @Around("@annotation(ru.clevertec.proxy.annotation.GetById) && args(id)")
     public Optional<Animal> get(ProceedingJoinPoint joinPoint, UUID id) throws Throwable {
         Optional<Animal> result = cache.get(id);
         if (result.isPresent())
@@ -63,7 +63,7 @@ public class CacheProxyAspect {
      *
      * @param animal сущность
      */
-    @After("@annotation(ru.clevertec.animal.proxy.annotation.Put) && args(animal)")
+    @After("@annotation(ru.clevertec.proxy.annotation.Put) && args(animal)")
     public void put(Animal animal) {
         cache.put(animal.getId(), animal);
     }
@@ -74,7 +74,7 @@ public class CacheProxyAspect {
      *
      * @param id идентификатор сущности
      */
-    @After("@annotation(ru.clevertec.animal.proxy.annotation.Delete) && args(id)")
+    @After("@annotation(ru.clevertec.proxy.annotation.Delete) && args(id)")
     public void remove(UUID id) {
         cache.remove(id);
     }

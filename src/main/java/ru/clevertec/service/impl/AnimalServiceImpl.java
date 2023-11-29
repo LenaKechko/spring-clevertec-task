@@ -7,9 +7,11 @@ import ru.clevertec.entity.Animal;
 import ru.clevertec.exception.AnimalNotFoundException;
 import ru.clevertec.exception.ValidatorException;
 import ru.clevertec.mapper.AnimalMapper;
-import ru.clevertec.animal.mapper.AnimalMapperImpl;
+import ru.clevertec.mapper.AnimalMapperImpl;
 import ru.clevertec.service.IBaseService;
 import ru.clevertec.validator.ObjectValidator;
+import ru.clevertec.writer.Writer;
+import ru.clevertec.writer.impl.WriterPdf;
 
 import java.util.List;
 import java.util.UUID;
@@ -46,9 +48,12 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
      */
     @Override
     public AnimalDto get(UUID uuid) {
-        return mapper.toAnimalDTO(
-                animalDao.findEntityById(uuid)
-                        .orElseThrow(() -> new AnimalNotFoundException(uuid)));
+        Animal animal = animalDao.findEntityById(uuid)
+                .orElseThrow(() -> new AnimalNotFoundException(uuid));
+        AnimalDto animalDto = mapper.toAnimalDTO(animal);
+        Writer<AnimalDto> writer = new Writer<>(new WriterPdf<>());
+        writer.runWriter("Информация по животному с кодом: " + uuid, animalDto);
+        return animalDto;
     }
 
     /**

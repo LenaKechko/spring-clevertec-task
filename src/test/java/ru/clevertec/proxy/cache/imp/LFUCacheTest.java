@@ -1,14 +1,13 @@
-package ru.clevertec.animal.proxy.cache.imp;
+package ru.clevertec.proxy.cache.imp;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.clevertec.entity.Animal;
 import ru.clevertec.proxy.cache.IBaseCache;
-import ru.clevertec.proxy.cache.imp.LRUCache;
+import ru.clevertec.proxy.cache.imp.LFUCache;
 import ru.clevertec.util.AnimalTestData;
 
 import java.lang.reflect.Field;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -16,13 +15,14 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class LRUCacheTest {
+
+class LFUCacheTest {
 
     private IBaseCache<UUID, Animal> cache;
 
     @BeforeEach
     void setUp() {
-        cache = new LRUCache<>(3);
+        cache = new LFUCache<>(3);
     }
 
     @Test
@@ -47,11 +47,11 @@ class LRUCacheTest {
         Field field = cache.getClass().getDeclaredField("cacheMap");
         field.setAccessible(true);
         field.set(cache, new HashMap<>(Map.of(id,
-                new LRUCache.Node<>(id, AnimalTestData.builder().build().buildAnimal(), LocalDateTime.now()),
+                new LFUCache.Node<>(id, AnimalTestData.builder().build().buildAnimal(),1),
                 uuid1,
-                new LRUCache.Node<>(uuid1, AnimalTestData.builder().withUuid(uuid1).build().buildAnimal(), LocalDateTime.now()),
+                new LFUCache.Node<>(uuid1, AnimalTestData.builder().withUuid(uuid1).build().buildAnimal(), 2),
                 uuid2,
-                new LRUCache.Node<>(uuid2, AnimalTestData.builder().withUuid(uuid2).build().buildAnimal(), LocalDateTime.now())
+                new LFUCache.Node<>(uuid2, AnimalTestData.builder().withUuid(uuid2).build().buildAnimal(), 3)
         )));
         field.setAccessible(false);
         Optional<Animal> expected = Optional.ofNullable(AnimalTestData.builder().build().buildAnimal());
@@ -89,12 +89,15 @@ class LRUCacheTest {
         Field field = cache.getClass().getDeclaredField("cacheMap");
         field.setAccessible(true);
         field.set(cache, new HashMap<>(Map.of(uuid1,
-                new LRUCache.Node<>(uuid1, AnimalTestData.builder().withUuid(uuid1).build().buildAnimal(), LocalDateTime.of(2023, 11, 18, 0, 0, 0)),
+                new LFUCache.Node<>(uuid1, AnimalTestData.builder().withUuid(uuid1).build().buildAnimal(), 1),
                 uuid2,
-                new LRUCache.Node<>(uuid2, AnimalTestData.builder().withUuid(uuid2).build().buildAnimal(), LocalDateTime.of(2023, 11, 19, 1, 0, 0)),
+                new LFUCache.Node<>(uuid2, AnimalTestData.builder().withUuid(uuid2).build().buildAnimal(), 2),
                 uuid3,
-                new LRUCache.Node<>(uuid3, AnimalTestData.builder().withUuid(uuid3).build().buildAnimal(), LocalDateTime.of(2023, 11, 19, 2, 0, 0))
+                new LFUCache.Node<>(uuid3, AnimalTestData.builder().withUuid(uuid3).build().buildAnimal(), 3)
         )));
+        field = cache.getClass().getDeclaredField("head");
+        field.setAccessible(true);
+        field.set(cache, new LFUCache.Node<>(uuid1, AnimalTestData.builder().withUuid(uuid1).build().buildAnimal(), 1));
         Animal animal = AnimalTestData.builder().build().buildAnimal();
         int expectedSizeMap = 3;
 
@@ -118,11 +121,11 @@ class LRUCacheTest {
         Field field = cache.getClass().getDeclaredField("cacheMap");
         field.setAccessible(true);
         field.set(cache, new HashMap<>(Map.of(id,
-                new LRUCache.Node<>(id, AnimalTestData.builder().build().buildAnimal(), LocalDateTime.now()),
+                new LFUCache.Node<>(id, AnimalTestData.builder().build().buildAnimal(), 1),
                 uuid1,
-                new LRUCache.Node<>(uuid1, AnimalTestData.builder().withUuid(uuid1).build().buildAnimal(), LocalDateTime.now()),
+                new LFUCache.Node<>(uuid1, AnimalTestData.builder().withUuid(uuid1).build().buildAnimal(), 2),
                 uuid2,
-                new LRUCache.Node<>(uuid2, AnimalTestData.builder().withUuid(uuid2).build().buildAnimal(), LocalDateTime.now())
+                new LFUCache.Node<>(uuid2, AnimalTestData.builder().withUuid(uuid2).build().buildAnimal(), 3)
         )));
         field.setAccessible(false);
         int expectedSizeAfterRemove = 2;
