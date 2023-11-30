@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class LRUCacheTest {
 
@@ -107,6 +108,35 @@ class LRUCacheTest {
 
         // then
         assertEquals(expectedSizeMap, actualSizeMap);
+    }
+
+    @Test
+    void putExistingInCacheEntityShouldReturnUpdateCache() throws NoSuchFieldException, IllegalAccessException {
+        // given
+        UUID uuid1 = UUID.randomUUID();
+        UUID uuid2 = UUID.randomUUID();
+        UUID uuid3 = UUID.randomUUID();
+        Field field = cache.getClass().getDeclaredField("cacheMap");
+        field.setAccessible(true);
+        field.set(cache, new HashMap<>(Map.of(uuid1,
+                new LRUCache.Node<>(uuid1, AnimalTestData.builder().withUuid(uuid1).build().buildAnimal(), LocalDateTime.of(2023, 11, 18, 0, 0, 0)),
+                uuid2,
+                new LRUCache.Node<>(uuid2, AnimalTestData.builder().withUuid(uuid2).build().buildAnimal(), LocalDateTime.of(2023, 11, 19, 1, 0, 0)),
+                uuid3,
+                new LRUCache.Node<>(uuid3, AnimalTestData.builder().withUuid(uuid3).build().buildAnimal(), LocalDateTime.of(2023, 11, 19, 2, 0, 0))
+        )));
+        Animal animal = AnimalTestData.builder().withUuid(uuid1).build().buildAnimal();
+        LocalDateTime unexpectedLocalDateTime = LocalDateTime.of(2023, 11, 18, 0, 0, 0);
+
+        // when
+        cache.put(animal.getId(), animal);
+        Field map = cache.getClass().getDeclaredField("cacheMap");
+
+        map.setAccessible(true);
+        LocalDateTime actualLocalDateTime = ((LRUCache.Node<?, ?>) ((Map<?, ?>) map.get(cache)).get(uuid1)).getTimeLastUsing();
+
+        // then
+        assertNotEquals(unexpectedLocalDateTime, actualLocalDateTime);
     }
 
     @Test

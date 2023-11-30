@@ -10,7 +10,6 @@ import ru.clevertec.writer.util.pdf.impl.CreatePdfPageWithTemplateImpl;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -38,7 +37,7 @@ public class WriterPdf<T> implements IWriter<T> {
      * @param entity  запись сущности
      */
     @Override
-    public void createFile(String caption, T entity) {
+    public String createFile(String caption, T entity) {
         String dest = DEST_PATH + entity.getClass().getSimpleName() + "_"
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + ".pdf";
         PdfDocument destPdf = createPdfWriter(dest);
@@ -52,6 +51,7 @@ public class WriterPdf<T> implements IWriter<T> {
         CreatePdfDocumentContent<T> content = new CreatePdfDocumentContent<>(destPdf);
         content.addContent(caption, entity);
         content.stop();
+        return dest;
     }
 
     /**

@@ -76,7 +76,7 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
      * @throws AnimalNotFoundException если животное не было сохранено
      */
     @Override
-    public UUID create(AnimalDto animalDto) {
+    public UUID create(AnimalDto animalDto) throws ValidatorException {
         try {
             boolean isCreate = false;
             Animal animalToSave = mapper.toAnimal(animalDto);
@@ -87,7 +87,7 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
                 return animalDao.findIdByEntity(animalToSave);
             }
             throw new AnimalNotFoundException(null);
-        } catch (IllegalAccessException | ValidatorException e) {
+        } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }

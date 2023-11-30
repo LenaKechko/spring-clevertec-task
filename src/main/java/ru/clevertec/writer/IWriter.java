@@ -4,5 +4,5 @@ public interface IWriter<T> {
 
     String DEST_PATH = "printInfo//print";
 
-    void createFile(String caption, T entity);
+    String createFile(String caption, T entity);
 }
