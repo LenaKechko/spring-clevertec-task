@@ -35,6 +35,7 @@ public class WriterPdf<T> implements IWriter<T> {
      *
      * @param caption заголовок данных в файле
      * @param entity  запись сущности
+     * @return имя созданного файла
      */
     @Override
     public String createFile(String caption, T entity) {

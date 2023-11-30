@@ -1,6 +1,6 @@
 package ru.clevertec.dao.impl;
 
-import ru.clevertec.connectionDB.MyConnection;
+import ru.clevertec.connectionDB.MySingletonConnection;
 import ru.clevertec.dao.IBaseDao;
 import ru.clevertec.entity.Animal;
 import ru.clevertec.proxy.annotation.Delete;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class AnimalDao implements IBaseDao<UUID, Animal> {
 
-    private final Connection connection = MyConnection.getConnectionDB();
+    private final Connection connection = MySingletonConnection.INSTANCE.getConnectionDB();
 
     /**
      * Запрос на вывод всех данных из таблицы

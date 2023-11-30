@@ -1,7 +1,6 @@
 package ru.clevertec.exception;
 
 import java.lang.reflect.Field;
-import java.util.UUID;
 
 /**
  * Собственное исключение для обработки ситуации с невалидными данными

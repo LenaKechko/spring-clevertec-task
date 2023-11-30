@@ -84,13 +84,11 @@ public class LRUCache<K, V> implements IBaseCache<K, V> {
      * Класс для элементов соответствующих ключу в кэше.
      * Содержат последнее время обращение к элементу
      */
+    @Getter
     protected static class Node<K, V> {
 
-        @Getter
         K key;
-        @Getter
         V value;
-        @Getter
         LocalDateTime timeLastUsing;
 
         public Node(K key, V value, LocalDateTime timeLastUsing) {

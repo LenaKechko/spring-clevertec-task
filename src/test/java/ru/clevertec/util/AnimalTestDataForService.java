@@ -1,7 +1,7 @@
 package ru.clevertec.util;
 
 import lombok.Data;
-import ru.clevertec.connectionDB.MyConnection;
+import ru.clevertec.connectionDB.MySingletonConnection;
 import ru.clevertec.data.AnimalDto;
 import ru.clevertec.entity.Animal;
 
@@ -29,7 +29,7 @@ public class AnimalTestDataForService {
     private double speed;
 
     public AnimalTestDataForService() {
-        Connection connection = MyConnection.getConnectionDB();
+        Connection connection = MySingletonConnection.INSTANCE.getConnectionDB();
         String SQL_SELECT_ALL_ANIMALS = "SELECT * FROM animals";
         try (
                 Statement statement = connection.createStatement()) {
