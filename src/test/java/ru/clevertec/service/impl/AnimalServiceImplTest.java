@@ -12,14 +12,17 @@ import ru.clevertec.entity.Animal;
 import ru.clevertec.exception.AnimalNotFoundException;
 import ru.clevertec.exception.ValidatorException;
 import ru.clevertec.mapper.AnimalMapper;
-import ru.clevertec.util.AnimalTestData;
 import ru.clevertec.util.AnimalTestDataForService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 
@@ -33,18 +36,19 @@ class AnimalServiceImplTest {
     @InjectMocks
     private AnimalServiceImpl service;
 
+    private AnimalTestDataForService testData;
+
     @BeforeEach
     void setUp() {
-        AnimalTestDataForService.builder().build();
+        testData = new AnimalTestDataForService();
     }
 
     @Test
     void getShouldReturnAnimalDto() {
         // given
-        UUID uuid = AnimalTestDataForService.builder().build().getUuid();
-        AnimalDto expected = AnimalTestDataForService.builder()
-                .build()
-                .buildAnimalDto();
+
+        UUID uuid = testData.getUuid();
+        AnimalDto expected = testData.buildAnimalDto();
 
         // when
         AnimalDto actual = service.get(uuid);
@@ -71,9 +75,7 @@ class AnimalServiceImplTest {
     @Test
     void getAllShouldReturnAnimalsListDto() {
         // given
-        List<AnimalDto> expectedList = AnimalTestDataForService.builder()
-                .build()
-                .buildListAnimalsDto();
+        List<AnimalDto> expectedList = testData.buildListAnimalsDto();
 
         // when
         List<AnimalDto> actualList = service.getAll();
@@ -85,8 +87,7 @@ class AnimalServiceImplTest {
     @Test
     void createShouldReturnUuidWhenAnimalSave() {
         // given
-        AnimalDto animalDto = AnimalTestData.builder()
-                .build().buildAnimalDto();
+        AnimalDto animalDto = testData.buildAnimalDto();
 
         // when
         UUID actualUuid = service.create(animalDto);
@@ -98,10 +99,8 @@ class AnimalServiceImplTest {
     @Test
     void createShouldReturnValidatorException() {
         // given
-        AnimalDto animalDto = AnimalTestData.builder()
-                .withWeight(0.0)
-                .build()
-                .buildAnimalDto();
+        AnimalDto animalDto = testData.buildAnimalDto();
+        animalDto.setWeight(0.0);
 
         // when-then
         assertThrows(ValidatorException.class, () -> service.create(animalDto));
@@ -110,16 +109,20 @@ class AnimalServiceImplTest {
     @Test
     void update() {
         // given
-        UUID uuid = AnimalTestDataForService.builder().build().getUuid();
-        AnimalDto animalDtoToUpdate = AnimalTestDataForService.builder()
-                .build().buildAnimalDto();
+        UUID uuid = testData.getUuid();
+        Animal animalToUpdate = testData.buildAnimal();
+        AnimalDto animalDtoToUpdate = testData.buildAnimalDto();
         animalDtoToUpdate.setClassOfAnimal("Новый класс");
-        Animal animalToUpdate = AnimalTestDataForService.builder()
-                .build().buildAnimal();
-        animalToUpdate.setClassOfAnimal("Новый класс");
-        Animal expected = AnimalTestDataForService.builder()
-                .build().buildAnimal();
+        Animal expected = testData.buildAnimal();
         expected.setClassOfAnimal("Новый класс");
+
+        doReturn(expected)
+                .when(mapper)
+                .merge(animalToUpdate, animalDtoToUpdate);
+
+        doReturn(Optional.of(animalToUpdate))
+                .when(animalDao)
+                .findEntityById(uuid);
 
         // when
         service.update(uuid, animalDtoToUpdate);
@@ -131,7 +134,7 @@ class AnimalServiceImplTest {
     @Test
     void delete() {
         // given
-        UUID uuid = AnimalTestDataForService.builder().build().getUuid();
+        UUID uuid = testData.getUuid();
 
         // when
         service.delete(uuid);
