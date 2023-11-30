@@ -1,10 +1,9 @@
 package ru.clevertec.util;
 
-import lombok.Builder;
 import lombok.Data;
-import ru.clevertec.animal.connectionDB.MyConnection;
-import ru.clevertec.animal.data.AnimalDto;
-import ru.clevertec.animal.entity.Animal;
+import ru.clevertec.connectionDB.MySingletonConnection;
+import ru.clevertec.data.AnimalDto;
+import ru.clevertec.entity.Animal;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,14 +14,22 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@Builder(setterPrefix = "with")
+//@Builder(setterPrefix = "with")
 public class AnimalTestDataForService {
 
-    static Animal animalTest;
-    static List<Animal> animalsTest = new ArrayList<>();
+    private Animal animalTest;
+    private List<Animal> animalsTest = new ArrayList<>();
 
-    static {
-        Connection connection = MyConnection.getConnectionDB();
+    private UUID uuid;
+    private String name;
+    private String typeOfAnimal;
+    private String classOfAnimal;
+    private double weight;
+    private double height;
+    private double speed;
+
+    public AnimalTestDataForService() {
+        Connection connection = MySingletonConnection.INSTANCE.getConnectionDB();
         String SQL_SELECT_ALL_ANIMALS = "SELECT * FROM animals";
         try (
                 Statement statement = connection.createStatement()) {
@@ -38,33 +45,18 @@ public class AnimalTestDataForService {
                 animalsTest.add(new Animal(id, name, typeOfAnimal, classOfAnimal, weight, height, speed));
             }
             animalTest = animalsTest.get((int) (Math.random() * (animalsTest.size())));
+            uuid = animalTest.getId();
+            name = animalTest.getName();
+            typeOfAnimal = animalTest.getTypeOfAnimal();
+            classOfAnimal = animalTest.getClassOfAnimal();
+            weight = animalTest.getWeight();
+            height = animalTest.getHeight();
+            speed = animalTest.getSpeed();
         } catch (
                 SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-
-    @Builder.Default
-    private UUID uuid = animalTest.getId();
-
-    @Builder.Default
-    private String name = animalTest.getName();
-
-    @Builder.Default
-    private String typeOfAnimal = animalTest.getTypeOfAnimal();
-
-
-    @Builder.Default
-    private String classOfAnimal = animalTest.getClassOfAnimal();
-
-    @Builder.Default
-    private double weight = animalTest.getWeight();
-
-    @Builder.Default
-    private double height = animalTest.getHeight();
-
-    @Builder.Default
-    private double speed = animalTest.getSpeed();
 
     public List<Animal> buildListAnimals() {
         return animalsTest;

@@ -1,8 +1,10 @@
 package ru.clevertec;
 
-import ru.clevertec.animal.data.AnimalDto;
-import ru.clevertec.animal.service.IBaseService;
-import ru.clevertec.animal.service.impl.AnimalServiceImpl;
+import ru.clevertec.data.AnimalDto;
+import ru.clevertec.service.IBaseService;
+import ru.clevertec.service.impl.AnimalServiceImpl;
+import ru.clevertec.writer.Writer;
+import ru.clevertec.writer.impl.WriterPdf;
 
 import java.util.UUID;
 
@@ -16,6 +18,10 @@ public class Main {
         AnimalDto animalDto = new AnimalDto("Animal", "type", "class", 1000.0, 1.5, 40.0);
         System.out.println(animalDto);
         UUID uuid = service.create(animalDto);
+        System.out.println(service.get(uuid));
+        Writer<AnimalDto> writer = new Writer<>(new WriterPdf<>());
+        writer.runWriter("Информация по животному с кодом: " + uuid, animalDto);
+
         System.out.println("--------Содержамое таблицы базы данных-------------");
         service.getAll()
                 .forEach(System.out::println);
