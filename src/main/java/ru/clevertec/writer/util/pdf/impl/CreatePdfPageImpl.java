@@ -1,7 +1,6 @@
 package ru.clevertec.writer.util.pdf.impl;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfPage;
 import ru.clevertec.writer.util.ICreatePage;
 
 /**
@@ -15,7 +14,7 @@ public class CreatePdfPageImpl implements ICreatePage {
     /**
      * Поле с файлом для дальнейшего изменения
      */
-    private PdfDocument destPdf = null;
+    private final PdfDocument destPdf;
 
     /**
      * Инициализирующий конструктор
@@ -28,6 +27,6 @@ public class CreatePdfPageImpl implements ICreatePage {
      * Создание страницы
      */
     public void createPage() {
-        PdfPage page = destPdf.addNewPage();
+        destPdf.addNewPage();
     }
 }

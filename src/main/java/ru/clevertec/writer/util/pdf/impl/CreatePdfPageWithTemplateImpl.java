@@ -18,11 +18,11 @@ public class CreatePdfPageWithTemplateImpl implements ICreatePage {
     /**
      * Поле с файлом для дальнейшего изменения
      */
-    private PdfDocument destPdf = null;
+    private final PdfDocument destPdf;
     /**
      * Поле с шаблоном
      */
-    private PdfDocument srcPdf = null;
+    private final PdfDocument srcPdf;
 
     /**
      * Инициализирующий конструктор

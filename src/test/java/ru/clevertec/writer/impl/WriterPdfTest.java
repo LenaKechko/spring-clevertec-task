@@ -35,8 +35,6 @@ class WriterPdfTest {
                 .replaceAll(" ", "")
                 .replaceAll("\n", "");
         reader.close();
-//        Path path = Paths.get(nameNewFile);
-//        Files.deleteIfExists(path);
 
         assertEquals(expected, actual);
     }

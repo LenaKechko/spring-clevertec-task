@@ -22,7 +22,7 @@ public class CreatePdfDocumentContent<T> {
     /**
      * Поле с документом
      */
-    private Document document = null;
+    private final Document document;
 
     /**
      * Конструктор создает документ размера A4
