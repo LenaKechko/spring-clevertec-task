@@ -1,4 +1,4 @@
-package ru.clevertec.data;
+package ru.clevertec.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

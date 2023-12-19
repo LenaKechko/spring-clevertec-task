@@ -5,7 +5,7 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 import org.junit.jupiter.api.Test;
-import ru.clevertec.data.AnimalDto;
+import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.util.AnimalTestData;
 
 import java.io.IOException;

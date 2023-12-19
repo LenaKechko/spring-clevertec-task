@@ -3,7 +3,7 @@ package ru.clevertec.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import ru.clevertec.data.AnimalDto;
+import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.entity.Animal;
 
 /**

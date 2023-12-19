@@ -2,7 +2,7 @@ package ru.clevertec.service.impl;
 
 import ru.clevertec.dao.IBaseDao;
 import ru.clevertec.dao.impl.AnimalDao;
-import ru.clevertec.data.AnimalDto;
+import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.entity.Animal;
 import ru.clevertec.exception.AnimalNotFoundException;
 import ru.clevertec.exception.ValidatorException;
@@ -51,8 +51,8 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
         Animal animal = animalDao.findEntityById(uuid)
                 .orElseThrow(() -> new AnimalNotFoundException(uuid));
         AnimalDto animalDto = mapper.toAnimalDTO(animal);
-        Writer<AnimalDto> writer = new Writer<>(new WriterPdf<>());
-        writer.runWriter("Информация по животному с кодом: " + uuid, animalDto);
+//        Writer<AnimalDto> writer = new Writer<>(new WriterPdf<>());
+//        writer.runWriter("Информация по животному с кодом: " + uuid, animalDto);
         return animalDto;
     }
 
@@ -64,6 +64,18 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
     @Override
     public List<AnimalDto> getAll() {
         return animalDao.findAll().stream()
+                .map(mapper::toAnimalDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Возвращает 20 животных
+     *
+     * @return лист с информацией о животных
+     */
+    @Override
+    public List<AnimalDto> getAll(int page, int size) {
+        return animalDao.findAll(page, size).stream()
                 .map(mapper::toAnimalDTO)
                 .collect(Collectors.toList());
     }

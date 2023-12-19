@@ -1,7 +1,7 @@
 package ru.clevertec.validator;
 
 import org.junit.jupiter.api.Test;
-import ru.clevertec.data.AnimalDto;
+import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.exception.ValidatorException;
 import ru.clevertec.util.AnimalTestData;
 

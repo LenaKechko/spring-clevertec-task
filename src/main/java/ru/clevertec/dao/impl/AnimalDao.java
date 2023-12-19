@@ -1,6 +1,6 @@
 package ru.clevertec.dao.impl;
 
-import ru.clevertec.connectionDB.MySingletonConnection;
+import ru.clevertec.connection.MySingletonConnection;
 import ru.clevertec.dao.IBaseDao;
 import ru.clevertec.entity.Animal;
 import ru.clevertec.proxy.annotation.Delete;
@@ -20,7 +20,14 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
     /**
      * Запрос на вывод всех данных из таблицы
      */
-    String SQL_SELECT_ALL_ANIMALS = "SELECT * FROM animals";
+    String SQL_SELECT_ALL_ANIMALS =
+            "SELECT * FROM animals";
+
+    /**
+     * Запрос на вывод 20 записей из таблицы (по странично)
+     */
+    String SQL_SELECT_ANIMALS =
+            "SELECT * FROM animals LIMIT ? OFFSET ?";
 
     /**
      * Запрос на вывод данных по известному id
@@ -71,6 +78,28 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
                 double weight = rs.getDouble(5);
                 double height = rs.getDouble(6);
                 double speed = rs.getDouble(7);
+                animals.add(new Animal(id, name, typeOfAnimal, classOfAnimal, weight, height, speed));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return animals;
+    }
+
+    public List<Animal> findAll(int page, int size) {
+        List<Animal> animals = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ANIMALS)) {
+            statement.setObject(1, size);
+            statement.setObject(2, (page - 1) * size);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                UUID id = UUID.fromString(rs.getString("id"));
+                String name = rs.getString("name");
+                String typeOfAnimal = rs.getString("type_of_animal");
+                String classOfAnimal = rs.getString("class_of_animal");
+                double weight = rs.getDouble("weight");
+                double height = rs.getDouble("height");
+                double speed = rs.getDouble("speed");
                 animals.add(new Animal(id, name, typeOfAnimal, classOfAnimal, weight, height, speed));
             }
         } catch (SQLException e) {
