@@ -111,14 +111,14 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
      * @param animalDto DTO с информацией об обновлении
      */
     @Override
-    public void update(UUID uuid, AnimalDto animalDto) {
+    public void update(UUID uuid, AnimalDto animalDto) throws ValidatorException{
         try {
             if (ObjectValidator.validate(animalDto)) {
                 Animal animalUpdate = animalDao.findEntityById(uuid).orElseThrow(() -> new AnimalNotFoundException(uuid));
                 animalDao.update(mapper.merge(animalUpdate, animalDto));
             }
-        } catch (ValidatorException e) {
-            System.out.println(e.getMessage());
+//        } catch (ValidatorException e) {
+//            System.out.println(e.getMessage());
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }

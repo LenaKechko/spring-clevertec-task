@@ -1,7 +1,10 @@
 package ru.clevertec.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import ru.clevertec.dto.AnimalDto;
+import ru.clevertec.exception.AnimalNotFoundException;
+import ru.clevertec.exception.ValidatorException;
 import ru.clevertec.service.IBaseService;
 import ru.clevertec.service.impl.AnimalServiceImpl;
 
@@ -15,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @WebServlet(name = "Animal", urlPatterns = "/animal")
+@Slf4j
 public class AnimalServlet extends HttpServlet {
 
     private final IBaseService<AnimalDto> service = new AnimalServiceImpl();
@@ -22,7 +26,7 @@ public class AnimalServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String uuid = req.getParameter("uuid"); //"420752b8-a0c8-49f9-96de-19556c6ad013"
+        String uuid = req.getParameter("uuid");
         String json;
 
         if (uuid == null) {
@@ -32,51 +36,40 @@ public class AnimalServlet extends HttpServlet {
                 page = Integer.parseInt(pageParameter);
             List<AnimalDto> animals = service.getAll(page, 20);
             json = objectMapper.writeValueAsString(animals);
+            successfulProcess(resp, json);
         } else {
-            AnimalDto animal = service.get(UUID.fromString(uuid));
-            json = objectMapper.writeValueAsString(animal);
+            try {
+                AnimalDto animal = service.get(UUID.fromString(uuid));
+                json = objectMapper.writeValueAsString(animal);
+                successfulProcess(resp, json);
+            } catch (AnimalNotFoundException e) {
+                failProcess(resp, e.getMessage());
+            }
         }
 
-        try (PrintWriter out = resp.getWriter()) {
-            out.write(json);
-            resp.setStatus(200);
-        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String temp;
-        String name = req.getParameter("name");
-        String typeOfAnimal = req.getParameter("typeOfAnimal");
-        String classOfAnimal = req.getParameter("classOfAnimal");
-        double weight = (temp = req.getParameter("weight")) == null ? 0.0 : Double.parseDouble(temp);
-        double height = (temp = req.getParameter("height")) == null ? 0.0 : Double.parseDouble(temp);
-        double speed = (temp = req.getParameter("speed")) == null ? 0.0 : Double.parseDouble(temp);
-        AnimalDto animalDto = new AnimalDto(name, typeOfAnimal, classOfAnimal, weight, height, speed);
-        UUID uuid = service.create(animalDto);
-        if (uuid != null) {
-            try (PrintWriter out = resp.getWriter()) {
-                out.write(String.valueOf(uuid));
-                resp.setStatus(200);
-            }
+        AnimalDto animalDto = parseRequest(req);
+        try {
+            UUID uuid = service.create(animalDto);
+            successfulProcess(resp, String.valueOf(uuid));
+        } catch (ValidatorException | AnimalNotFoundException e) {
+            failProcess(resp, e.getMessage());
         }
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) {
-        String temp;
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String uuid = req.getParameter("uuid");
-        String name = req.getParameter("name");
-        String typeOfAnimal = req.getParameter("typeOfAnimal");
-        String classOfAnimal = req.getParameter("classOfAnimal");
-        double weight = (temp = req.getParameter("weight")) == null ? 0.0 : Double.parseDouble(temp);
-        double height = (temp = req.getParameter("height")) == null ? 0.0 : Double.parseDouble(temp);
-        double speed = (temp = req.getParameter("speed")) == null ? 0.0 : Double.parseDouble(temp);
-        AnimalDto animalDto = new AnimalDto(name, typeOfAnimal, classOfAnimal, weight, height, speed);
-
-        service.update(UUID.fromString(uuid), animalDto);
-
-        resp.setStatus(200);
+        AnimalDto animalDto = parseRequest(req);
+        try {
+            service.update(UUID.fromString(uuid), animalDto);
+            successfulProcess(resp, "Success update entity");
+        } catch (ValidatorException e) {
+            failProcess(resp, e.getMessage());
+        }
     }
 
     @Override
@@ -86,6 +79,30 @@ public class AnimalServlet extends HttpServlet {
         service.delete(UUID.fromString(uuid));
 
         resp.setStatus(200);
+    }
+
+    private void successfulProcess(HttpServletResponse resp, String obj) throws IOException {
+        try (PrintWriter out = resp.getWriter()) {
+            out.write(obj);
+            resp.setStatus(200);
+            log.info("Process successful");
+        }
+    }
+
+    private void failProcess(HttpServletResponse resp, String obj) {
+        resp.setStatus(404);
+        log.info("Process fail. " + obj);
+    }
+
+    private AnimalDto parseRequest(HttpServletRequest req) {
+        String temp;
+        String name = req.getParameter("name");
+        String typeOfAnimal = req.getParameter("typeOfAnimal");
+        String classOfAnimal = req.getParameter("classOfAnimal");
+        double weight = (temp = req.getParameter("weight")) == null ? 0.0 : Double.parseDouble(temp);
+        double height = (temp = req.getParameter("height")) == null ? 0.0 : Double.parseDouble(temp);
+        double speed = (temp = req.getParameter("speed")) == null ? 0.0 : Double.parseDouble(temp);
+        return new AnimalDto(name, typeOfAnimal, classOfAnimal, weight, height, speed);
     }
 
 }

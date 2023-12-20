@@ -16,6 +16,6 @@ public class AnimalNotFoundException extends RuntimeException {
      * @param uuid - идентификатор продукта
      */
     public AnimalNotFoundException(UUID uuid) {
-        super(String.format("Product with uuid: %s not found", uuid));
+        super(String.format("Animal with uuid: %s not found", uuid));
     }
 }

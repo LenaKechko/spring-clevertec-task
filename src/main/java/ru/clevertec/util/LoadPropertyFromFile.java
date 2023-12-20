@@ -1,4 +1,4 @@
-package ru.clevertec.config.util;
+package ru.clevertec.util;
 
 import org.yaml.snakeyaml.Yaml;
 import ru.clevertec.Main;
@@ -20,7 +20,7 @@ public class LoadPropertyFromFile {
     private static final Map<String, Object> data;
 
     static {
-        InputStream inputStream = Main.class.getClassLoader()
+        InputStream inputStream = LoadPropertyFromFile.class.getClassLoader()
                 .getResourceAsStream("application.yml");
         Yaml yaml = new Yaml();
         data = yaml.load(inputStream);
