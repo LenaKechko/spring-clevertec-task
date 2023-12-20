@@ -1,6 +1,6 @@
 package ru.clevertec.dao.impl;
 
-import ru.clevertec.connection.MySingletonConnection;
+import ru.clevertec.config.connection.MySingletonConnection;
 import ru.clevertec.dao.IBaseDao;
 import ru.clevertec.entity.Animal;
 import ru.clevertec.proxy.annotation.Delete;

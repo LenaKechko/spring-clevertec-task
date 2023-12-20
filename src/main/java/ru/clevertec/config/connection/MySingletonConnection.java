@@ -1,4 +1,4 @@
-package ru.clevertec.connection;
+package ru.clevertec.config.connection;
 
 import org.postgresql.ds.PGSimpleDataSource;
 

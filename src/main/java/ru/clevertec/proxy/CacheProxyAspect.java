@@ -7,7 +7,7 @@ import ru.clevertec.exception.AnimalNotFoundException;
 import ru.clevertec.proxy.cache.IBaseCache;
 import ru.clevertec.proxy.cache.imp.LFUCache;
 import ru.clevertec.proxy.cache.imp.LRUCache;
-import ru.clevertec.util.LoadPropertyFromFile;
+import ru.clevertec.config.util.LoadPropertyFromFile;
 
 import java.util.Optional;
 import java.util.UUID;

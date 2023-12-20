@@ -22,7 +22,7 @@ public class AnimalServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String uuid = req.getParameter("uuid"); //"b1f6bb5f-c6c4-45f9-9024-5b2d6938f840"
+        String uuid = req.getParameter("uuid"); //"420752b8-a0c8-49f9-96de-19556c6ad013"
         String json;
 
         if (uuid == null) {

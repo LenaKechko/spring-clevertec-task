@@ -51,8 +51,8 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
         Animal animal = animalDao.findEntityById(uuid)
                 .orElseThrow(() -> new AnimalNotFoundException(uuid));
         AnimalDto animalDto = mapper.toAnimalDTO(animal);
-//        Writer<AnimalDto> writer = new Writer<>(new WriterPdf<>());
-//        writer.runWriter("Информация по животному с кодом: " + uuid, animalDto);
+        Writer<AnimalDto> writer = new Writer<>(new WriterPdf<>());
+        writer.runWriter("Информация по животному с кодом: " + uuid, animalDto);
         return animalDto;
     }
 

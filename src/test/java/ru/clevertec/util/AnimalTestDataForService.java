@@ -1,7 +1,7 @@
 package ru.clevertec.util;
 
 import lombok.Data;
-import ru.clevertec.connection.MySingletonConnection;
+import ru.clevertec.config.connection.MySingletonConnection;
 import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.entity.Animal;
 
