@@ -27,8 +27,10 @@ ext {
 }
 
 dependencies {
-//    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
     implementation 'javax.servlet:javax.servlet-api:4.0.1'
+
+    implementation 'org.slf4j:slf4j-api:1.7.36'
+    implementation 'ch.qos.logback:logback-classic:1.2.9'
 
     implementation("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
     implementation("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
@@ -37,6 +39,7 @@ dependencies {
     implementation("org.mapstruct:mapstruct:${mapstructVersion}")
     annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
 
+    implementation 'org.liquibase:liquibase-core:4.24.0'
     implementation 'org.postgresql:postgresql:42.6.0'
     implementation 'org.yaml:snakeyaml:2.0'
 

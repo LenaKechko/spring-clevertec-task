@@ -1,4 +1,4 @@
-package ru.clevertec.util;
+package ru.clevertec.config.util;
 
 import org.yaml.snakeyaml.Yaml;
 import ru.clevertec.Main;
@@ -42,5 +42,23 @@ public class LoadPropertyFromFile {
      */
     public static String getAlgorithm() {
         return (String) data.get("algorithm");
+    }
+
+    /**
+     * Метод возвращает property подключения liquibase
+     *
+     * @return true/false для миграции данных в БД или нет
+     */
+    public static String getLiquibaseChangelog() {
+        return (String) data.get("liquibase.change-log");
+    }
+
+    /**
+     * Метод возвращает property подключения liquibase
+     *
+     * @return true/false для миграции данных в БД или нет
+     */
+    public static Boolean getLiquibaseEnable() {
+        return (Boolean) data.get("liquibase.enable");
     }
 }

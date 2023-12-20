@@ -1,0 +1,28 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="v1-2" author="Kechko Elena">
+        <preConditions onFail="MARK_RAN">
+            <tableIsEmpty tableName="animals"/>
+        </preConditions>
+        <sql>
+            INSERT INTO animals(id, name, type_of_animal, class_of_animal, weight, height, speed)
+            VALUES (gen_random_uuid(),'Слон', 'Хоботные', 'Млекопитающие', 6640, 6.8, 40);
+            INSERT INTO animals(id, name, type_of_animal, class_of_animal, weight, height, speed)
+            VALUES (gen_random_uuid(), 'Бегемот', 'Парнокопытные', 'Млекопитающие', 3000, 1.5, 35);
+            INSERT INTO animals(id, name, type_of_animal, class_of_animal, weight, height, speed)
+            VALUES (gen_random_uuid(), 'Лев', 'Кошачие', 'Млекопитающие', 200, 1.2, 80);
+            INSERT INTO animals(id, name, type_of_animal, class_of_animal, weight, height, speed)
+            VALUES (gen_random_uuid(), 'Жираф', 'Парнокопытные', 'Млекопитающие', 1200, 6.1, 55);
+            INSERT INTO animals(id, name, type_of_animal, class_of_animal, weight, height, speed)
+            VALUES (gen_random_uuid(), 'Носорог', 'Непарнокопытные', 'Млекопитающие', 2900, 2, 45);
+        </sql>
+
+    </changeSet>
+</databaseChangeLog>
+
+
+
+

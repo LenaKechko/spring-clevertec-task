@@ -1,2 +1,4 @@
 sizeCache: 3
 algorithm: LRU #LFU
+liquibase.change-log: db/changelog/changelog.xml
+liquibase.enable: true
