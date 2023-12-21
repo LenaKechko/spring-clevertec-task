@@ -18,18 +18,36 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Класс (сервлет), отвечающий за обработку запросов о животных
+ * Обрабатывает запросы приходящие по пути '/animals/*'
+ */
+
 @WebServlet(name = "Animal", urlPatterns = "/animals/*")
 @Slf4j
 public class AnimalServlet extends HttpServlet {
 
+    /**
+     * Объект сервиса. Промежуточный слой для работы с БД
+     */
     private final IBaseService<AnimalDto> service = new AnimalServiceImpl();
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * Метод обрабатывающий запросы GET
+     * /animals - выдаст первых 20 животных
+     * /animals?page=2 - выдаст следующие 20 животных
+     * /animals?uuid={uuid} или /animals/{uuid} - выдаст конкретное животное по его uuid
+     * В случае успешного выполнения запроса будет присвоен статус 200,
+     * в случае возникшего исключения (отсутствия животного с таким uuid) - статус 404
+     *
+     * @param req  запрос от пользователя
+     * @param resp ответ сервера
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String uuid = parseUUID(req);
         String json;
-
+        ObjectMapper objectMapper = new ObjectMapper();
         if (uuid == null) {
             String pageParameter = req.getParameter("page");
             int page = 1;
@@ -49,6 +67,15 @@ public class AnimalServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Метод обрабатывающий запросы POST
+     * /animals - проверяет пришедший json и создает по данным животное
+     * В случае успешного выполнения запроса будет присвоен статус 200 и выведется uuid созданного животного,
+     * в случае возникшего исключения (отсутствия животного с таким uuid) - статус 404
+     *
+     * @param req  запрос от пользователя
+     * @param resp ответ сервера
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         AnimalDto animalDto = parseRequest(req);
@@ -60,6 +87,16 @@ public class AnimalServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Метод обрабатывающий запросы PUT
+     * /animals/{uuid} - проверяет пришедший json и по введенному uuid обновляет данные о животном
+     * /animals?uuid={uuid}&name={name}&... - по параметрам обновляет данные о животном
+     * В случае успешного выполнения запроса будет присвоен статус 200,
+     * в случае возникшего исключения (отсутствия животного с таким uuid) - статус 404
+     *
+     * @param req  запрос от пользователя
+     * @param resp ответ сервера
+     */
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String uuid = parseUUID(req);
@@ -72,6 +109,14 @@ public class AnimalServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Метод обрабатывающий запросы DELETE
+     * /animals/{uuid} или /animals?uuid={uuid} - по uuid удаляется данные о животном
+     * В случае успешного выполнения запроса будет присвоен статус 200,
+     *
+     * @param req  запрос от пользователя
+     * @param resp ответ сервера
+     */
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         String uuid = parseUUID(req);
@@ -81,6 +126,13 @@ public class AnimalServlet extends HttpServlet {
         resp.setStatus(200);
     }
 
+    /**
+     * Успешное выполнение запроса и вывод результатов
+     * Выставление статуса 200 серверу
+     *
+     * @param resp ответ сервера
+     * @param obj  сообщение пользователю
+     */
     private void successfulProcess(HttpServletResponse resp, String obj) throws IOException {
         try (PrintWriter out = resp.getWriter()) {
             out.write(obj);
@@ -89,11 +141,23 @@ public class AnimalServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Выполнение запроса с ошибкой
+     * Выставление статуса 404 серверу
+     *
+     * @param resp ответ сервера
+     * @param obj  сообщение пользователю (сообщение из исключения)
+     */
     private void failProcess(HttpServletResponse resp, String obj) {
         resp.setStatus(404);
         log.info("Process fail. " + obj);
     }
 
+    /**
+     * Метод для обработки приходящих параметров
+     *
+     * @param req запрос пользователя
+     */
     private AnimalDto parseRequest(HttpServletRequest req) throws IOException {
         if (!req.getParameterMap().isEmpty()) {
             String temp;
@@ -111,6 +175,11 @@ public class AnimalServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Метод для обработки приходящего uuid, если есть. Иначе возвращается null
+     *
+     * @param req запрос пользователя
+     */
     private String parseUUID(HttpServletRequest req) {
         String uuid = req.getParameter("uuid");
         String uri = req.getRequestURI();

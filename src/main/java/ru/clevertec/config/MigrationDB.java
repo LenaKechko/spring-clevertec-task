@@ -18,14 +18,24 @@ import java.sql.Connection;
 
 /**
  * Класс отвечающие за миграцию данных при запуске приложения
+ * Для миграции использовалась Liquibase
+ * Благодаря аннотации @WebListener миграция запускается при запуске приложения
  */
 
 @WebListener
 @Slf4j
 public class MigrationDB implements ServletContextListener {
 
+    /**
+     * Константа с путем до changelog для liquibase
+     */
     private final String FILE_CHANGELOG = LoadPropertyFromFile.getLiquibaseChangelog();
 
+    /**
+     * Метод отвечающий за инициализацию данных при запуске приложения
+     *
+     * @param sce объект для работы с контекстом сервлета
+     */
     @SneakyThrows
     public void contextInitialized(ServletContextEvent sce) {
         if (LoadPropertyFromFile.getLiquibaseEnable()) {
