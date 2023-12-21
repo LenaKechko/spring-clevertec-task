@@ -7,6 +7,7 @@ import ru.clevertec.exception.AnimalNotFoundException;
 import ru.clevertec.exception.ValidatorException;
 import ru.clevertec.service.IBaseService;
 import ru.clevertec.service.impl.AnimalServiceImpl;
+import ru.clevertec.util.ReadInputUtil;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +18,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.UUID;
 
-@WebServlet(name = "Animal", urlPatterns = "/animal")
+@WebServlet(name = "Animal", urlPatterns = "/animals/*")
 @Slf4j
 public class AnimalServlet extends HttpServlet {
 
@@ -26,7 +27,7 @@ public class AnimalServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String uuid = req.getParameter("uuid");
+        String uuid = parseUUID(req);
         String json;
 
         if (uuid == null) {
@@ -46,7 +47,6 @@ public class AnimalServlet extends HttpServlet {
                 failProcess(resp, e.getMessage());
             }
         }
-
     }
 
     @Override
@@ -62,7 +62,7 @@ public class AnimalServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String uuid = req.getParameter("uuid");
+        String uuid = parseUUID(req);
         AnimalDto animalDto = parseRequest(req);
         try {
             service.update(UUID.fromString(uuid), animalDto);
@@ -74,7 +74,7 @@ public class AnimalServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
-        String uuid = req.getParameter("uuid");
+        String uuid = parseUUID(req);
 
         service.delete(UUID.fromString(uuid));
 
@@ -94,15 +94,30 @@ public class AnimalServlet extends HttpServlet {
         log.info("Process fail. " + obj);
     }
 
-    private AnimalDto parseRequest(HttpServletRequest req) {
-        String temp;
-        String name = req.getParameter("name");
-        String typeOfAnimal = req.getParameter("typeOfAnimal");
-        String classOfAnimal = req.getParameter("classOfAnimal");
-        double weight = (temp = req.getParameter("weight")) == null ? 0.0 : Double.parseDouble(temp);
-        double height = (temp = req.getParameter("height")) == null ? 0.0 : Double.parseDouble(temp);
-        double speed = (temp = req.getParameter("speed")) == null ? 0.0 : Double.parseDouble(temp);
-        return new AnimalDto(name, typeOfAnimal, classOfAnimal, weight, height, speed);
+    private AnimalDto parseRequest(HttpServletRequest req) throws IOException {
+        if (!req.getParameterMap().isEmpty()) {
+            String temp;
+            String name = req.getParameter("name");
+            String typeOfAnimal = req.getParameter("typeOfAnimal");
+            String classOfAnimal = req.getParameter("classOfAnimal");
+            double weight = (temp = req.getParameter("weight")) == null ? 0.0 : Double.parseDouble(temp);
+            double height = (temp = req.getParameter("height")) == null ? 0.0 : Double.parseDouble(temp);
+            double speed = (temp = req.getParameter("speed")) == null ? 0.0 : Double.parseDouble(temp);
+            return new AnimalDto(name, typeOfAnimal, classOfAnimal, weight, height, speed);
+        } else {
+            String json = ReadInputUtil.readInputStream(req.getInputStream());
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(json, AnimalDto.class);
+        }
+    }
+
+    private String parseUUID(HttpServletRequest req) {
+        String uuid = req.getParameter("uuid");
+        String uri = req.getRequestURI();
+        if (uuid == null && uri.contains("/animals/")) {
+            uuid = uri.substring(uri.indexOf("/animals/") + "/animals/".length());
+        }
+        return uuid;
     }
 
 }
