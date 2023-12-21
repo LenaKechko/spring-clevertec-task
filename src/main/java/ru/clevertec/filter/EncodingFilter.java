@@ -9,7 +9,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = "/animal")
+@WebFilter(urlPatterns = "/animals/*")
 public class EncodingFilter implements Filter {
 
     @Override
