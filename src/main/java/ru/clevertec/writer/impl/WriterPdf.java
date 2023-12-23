@@ -3,11 +3,13 @@ package ru.clevertec.writer.impl;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import ru.clevertec.util.LoadPropertyFromFile;
 import ru.clevertec.writer.IWriter;
 import ru.clevertec.writer.util.pdf.CreatePdfDocumentContent;
 import ru.clevertec.writer.util.pdf.impl.CreatePdfPageImpl;
 import ru.clevertec.writer.util.pdf.impl.CreatePdfPageWithTemplateImpl;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -41,6 +43,13 @@ public class WriterPdf<T> implements IWriter<T> {
     public String createFile(String caption, T entity) {
         String dest = DEST_PATH + entity.getClass().getSimpleName() + "_"
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + ".pdf";
+        File folder = new File(LoadPropertyFromFile.getPath());
+        System.out.println(folder);
+        if (folder.mkdir()) {
+            dest = folder + dest;
+        }
+        System.out.println(dest);
+
         PdfDocument destPdf = createPdfWriter(dest);
         if (FILE_TEMPLATE.isEmpty()) {
             new CreatePdfPageImpl(destPdf).createPage();

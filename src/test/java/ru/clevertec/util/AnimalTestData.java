@@ -2,7 +2,7 @@ package ru.clevertec.util;
 
 import lombok.Builder;
 import lombok.Data;
-import ru.clevertec.data.AnimalDto;
+import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.entity.Animal;
 
 import java.util.UUID;

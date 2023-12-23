@@ -1,7 +1,6 @@
 package ru.clevertec.util;
 
 import org.yaml.snakeyaml.Yaml;
-import ru.clevertec.Main;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -20,7 +19,7 @@ public class LoadPropertyFromFile {
     private static final Map<String, Object> data;
 
     static {
-        InputStream inputStream = Main.class.getClassLoader()
+        InputStream inputStream = LoadPropertyFromFile.class.getClassLoader()
                 .getResourceAsStream("application.yml");
         Yaml yaml = new Yaml();
         data = yaml.load(inputStream);
@@ -42,5 +41,32 @@ public class LoadPropertyFromFile {
      */
     public static String getAlgorithm() {
         return (String) data.get("algorithm");
+    }
+
+    /**
+     * Метод возвращает property подключения liquibase
+     *
+     * @return путь к changelog для миграции БД
+     */
+    public static String getLiquibaseChangelog() {
+        return (String) data.get("liquibase.change-log");
+    }
+
+    /**
+     * Метод возвращает property подключения liquibase
+     *
+     * @return true/false для миграции данных в БД или нет
+     */
+    public static Boolean getLiquibaseEnable() {
+        return (Boolean) data.get("liquibase.enable");
+    }
+
+    /**
+     * Метод возвращает путь, по которому сохраняется чек с животным
+     *
+     * @return путь
+     */
+    public static String getPath() {
+        return (String) data.get("pathForCheck");
     }
 }

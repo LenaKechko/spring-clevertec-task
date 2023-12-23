@@ -21,6 +21,13 @@ public interface IBaseDao<K, T> {
     List<T> findAll();
 
     /**
+     * Метод для просмотра данных по странично
+     *
+     * @return List объектов сущности
+     */
+    List<T> findAll(int page, int size);
+
+    /**
      * Метод для нахождение сущности из БД по id
      *
      * @param id объекта

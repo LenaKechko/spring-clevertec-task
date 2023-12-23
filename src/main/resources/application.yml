@@ -1,2 +1,5 @@
 sizeCache: 3
 algorithm: LRU #LFU
+pathForCheck : C:\\Temp\\
+liquibase.change-log: db/changelog/changelog.xml
+liquibase.enable: true

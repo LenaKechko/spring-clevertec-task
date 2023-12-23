@@ -1,13 +1,12 @@
 package ru.clevertec.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import ru.clevertec.dao.IBaseDao;
-import ru.clevertec.dao.impl.AnimalDao;
-import ru.clevertec.data.AnimalDto;
+import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.entity.Animal;
 import ru.clevertec.exception.AnimalNotFoundException;
 import ru.clevertec.exception.ValidatorException;
 import ru.clevertec.mapper.AnimalMapper;
-import ru.clevertec.mapper.AnimalMapperImpl;
 import ru.clevertec.service.IBaseService;
 import ru.clevertec.validator.ObjectValidator;
 import ru.clevertec.writer.Writer;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
  *
  * @author Кечко Елена
  */
-
+@RequiredArgsConstructor
 public class AnimalServiceImpl implements IBaseService<AnimalDto> {
 
     /**
@@ -33,11 +32,6 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
      * Поле для работы с mapper'ом
      */
     private final AnimalMapper mapper;
-
-    public AnimalServiceImpl() {
-        animalDao = new AnimalDao();
-        mapper = new AnimalMapperImpl();
-    }
 
     /**
      * ищет животное по идентификатору
@@ -64,6 +58,18 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
     @Override
     public List<AnimalDto> getAll() {
         return animalDao.findAll().stream()
+                .map(mapper::toAnimalDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Возвращает 20 животных
+     *
+     * @return лист с информацией о животных
+     */
+    @Override
+    public List<AnimalDto> getAll(int page, int size) {
+        return animalDao.findAll(page, size).stream()
                 .map(mapper::toAnimalDTO)
                 .collect(Collectors.toList());
     }
@@ -99,14 +105,14 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
      * @param animalDto DTO с информацией об обновлении
      */
     @Override
-    public void update(UUID uuid, AnimalDto animalDto) {
+    public void update(UUID uuid, AnimalDto animalDto) throws ValidatorException{
         try {
             if (ObjectValidator.validate(animalDto)) {
                 Animal animalUpdate = animalDao.findEntityById(uuid).orElseThrow(() -> new AnimalNotFoundException(uuid));
                 animalDao.update(mapper.merge(animalUpdate, animalDto));
             }
-        } catch (ValidatorException e) {
-            System.out.println(e.getMessage());
+//        } catch (ValidatorException e) {
+//            System.out.println(e.getMessage());
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
