@@ -2,11 +2,10 @@ package ru.clevertec.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import ru.clevertec.config.ConfigService;
 import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.exception.AnimalNotFoundException;
 import ru.clevertec.exception.ValidatorException;
-import ru.clevertec.service.IBaseService;
-import ru.clevertec.service.impl.AnimalServiceImpl;
 import ru.clevertec.util.ReadInputUtil;
 
 import javax.servlet.annotation.WebServlet;
@@ -27,10 +26,6 @@ import java.util.UUID;
 @Slf4j
 public class AnimalServlet extends HttpServlet {
 
-    /**
-     * Объект сервиса. Промежуточный слой для работы с БД
-     */
-    private final IBaseService<AnimalDto> service = new AnimalServiceImpl();
 
     /**
      * Метод обрабатывающий запросы GET
@@ -53,12 +48,12 @@ public class AnimalServlet extends HttpServlet {
             int page = 1;
             if (pageParameter != null)
                 page = Integer.parseInt(pageParameter);
-            List<AnimalDto> animals = service.getAll(page, 20);
+            List<AnimalDto> animals = ConfigService.getService().getAll(page, 20);
             json = objectMapper.writeValueAsString(animals);
             successfulProcess(resp, json);
         } else {
             try {
-                AnimalDto animal = service.get(UUID.fromString(uuid));
+                AnimalDto animal = ConfigService.getService().get(UUID.fromString(uuid));
                 json = objectMapper.writeValueAsString(animal);
                 successfulProcess(resp, json);
             } catch (AnimalNotFoundException e) {
@@ -80,7 +75,7 @@ public class AnimalServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         AnimalDto animalDto = parseRequest(req);
         try {
-            UUID uuid = service.create(animalDto);
+            UUID uuid = ConfigService.getService().create(animalDto);
             successfulProcess(resp, String.valueOf(uuid));
         } catch (ValidatorException | AnimalNotFoundException e) {
             failProcess(resp, e.getMessage());
@@ -102,7 +97,7 @@ public class AnimalServlet extends HttpServlet {
         String uuid = parseUUID(req);
         AnimalDto animalDto = parseRequest(req);
         try {
-            service.update(UUID.fromString(uuid), animalDto);
+            ConfigService.getService().update(UUID.fromString(uuid), animalDto);
             successfulProcess(resp, "Success update entity");
         } catch (ValidatorException e) {
             failProcess(resp, e.getMessage());
@@ -121,7 +116,7 @@ public class AnimalServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         String uuid = parseUUID(req);
 
-        service.delete(UUID.fromString(uuid));
+        ConfigService.getService().delete(UUID.fromString(uuid));
 
         resp.setStatus(200);
     }

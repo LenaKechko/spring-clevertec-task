@@ -1,13 +1,12 @@
 package ru.clevertec.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import ru.clevertec.dao.IBaseDao;
-import ru.clevertec.dao.impl.AnimalDao;
 import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.entity.Animal;
 import ru.clevertec.exception.AnimalNotFoundException;
 import ru.clevertec.exception.ValidatorException;
 import ru.clevertec.mapper.AnimalMapper;
-import ru.clevertec.mapper.AnimalMapperImpl;
 import ru.clevertec.service.IBaseService;
 import ru.clevertec.validator.ObjectValidator;
 import ru.clevertec.writer.Writer;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
  *
  * @author Кечко Елена
  */
-
+@RequiredArgsConstructor
 public class AnimalServiceImpl implements IBaseService<AnimalDto> {
 
     /**
@@ -33,11 +32,6 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
      * Поле для работы с mapper'ом
      */
     private final AnimalMapper mapper;
-
-    public AnimalServiceImpl() {
-        animalDao = new AnimalDao();
-        mapper = new AnimalMapperImpl();
-    }
 
     /**
      * ищет животное по идентификатору
