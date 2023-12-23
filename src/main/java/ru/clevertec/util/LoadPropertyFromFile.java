@@ -1,7 +1,6 @@
 package ru.clevertec.util;
 
 import org.yaml.snakeyaml.Yaml;
-import ru.clevertec.Main;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -47,7 +46,7 @@ public class LoadPropertyFromFile {
     /**
      * Метод возвращает property подключения liquibase
      *
-     * @return true/false для миграции данных в БД или нет
+     * @return путь к changelog для миграции БД
      */
     public static String getLiquibaseChangelog() {
         return (String) data.get("liquibase.change-log");
@@ -60,5 +59,14 @@ public class LoadPropertyFromFile {
      */
     public static Boolean getLiquibaseEnable() {
         return (Boolean) data.get("liquibase.enable");
+    }
+
+    /**
+     * Метод возвращает путь, по которому сохраняется чек с животным
+     *
+     * @return путь
+     */
+    public static String getPath() {
+        return (String) data.get("pathForCheck");
     }
 }
