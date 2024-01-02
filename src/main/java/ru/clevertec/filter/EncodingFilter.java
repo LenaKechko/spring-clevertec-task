@@ -1,12 +1,13 @@
 package ru.clevertec.filter;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.annotation.WebFilter;
+
 import java.io.IOException;
 
 /**
@@ -24,9 +25,10 @@ public class EncodingFilter implements Filter {
     /**
      * Фильтр отвечает за корректное отображение данных из БД.
      * Настройка кодировки
-     * @param servletRequest запрос от пользователя
+     *
+     * @param servletRequest  запрос от пользователя
      * @param servletResponse ответ пользователю с сервера
-     * @param filterChain запуск фильтра
+     * @param filterChain     запуск фильтра
      */
 
     @Override

@@ -1,5 +1,8 @@
 package ru.clevertec.config;
 
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 import liquibase.command.CommandScope;
 import liquibase.command.core.UpdateCommandStep;
 import liquibase.command.core.helpers.DbUrlConnectionCommandStep;
@@ -11,9 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import ru.clevertec.config.connection.MySingletonConnection;
 import ru.clevertec.util.LoadPropertyFromFile;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
+
 import java.sql.Connection;
 
 /**
