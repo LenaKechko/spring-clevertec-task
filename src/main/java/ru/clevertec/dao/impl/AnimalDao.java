@@ -1,12 +1,16 @@
 package ru.clevertec.dao.impl;
 
-import ru.clevertec.config.connection.MySingletonConnection;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.clevertec.dao.IBaseDao;
 import ru.clevertec.entity.Animal;
 import ru.clevertec.proxy.annotation.Delete;
 import ru.clevertec.proxy.annotation.GetById;
 import ru.clevertec.proxy.annotation.Put;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,9 +21,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Component
+@Slf4j
 public class AnimalDao implements IBaseDao<UUID, Animal> {
 
-    private final Connection connection = MySingletonConnection.INSTANCE.getConnectionDB();
+    @Autowired
+    private DataSource dataSource;
 
     /**
      * Запрос на вывод всех данных из таблицы
@@ -75,7 +82,8 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
     @Override
     public List<Animal> findAll() {
         List<Animal> animals = new ArrayList<>();
-        try (Statement statement = connection.createStatement()) {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(SQL_SELECT_ALL_ANIMALS);
             while (rs.next()) {
                 UUID id = UUID.fromString(rs.getString("id"));
@@ -88,8 +96,10 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
     }
 
     public List<Animal> findAll(int page, int size) {
+        log.info("Dao");
         List<Animal> animals = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ANIMALS)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ANIMALS)) {
             statement.setObject(1, size);
             statement.setObject(2, (page - 1) * size);
             ResultSet rs = statement.executeQuery();
@@ -113,7 +123,8 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
     @GetById
     public Optional<Animal> findEntityById(UUID id) {
         Animal animal = null;
-        try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ANIMAL_BY_ID)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ANIMAL_BY_ID)) {
             statement.setObject(1, id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -135,7 +146,8 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
     @Override
     public UUID findIdByEntity(Animal animal) {
         UUID id = null;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_ID_BY_ANIMAL)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_ID_BY_ANIMAL)) {
             addParameterIntoRequest(animal, preparedStatement);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -155,7 +167,8 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
     @Override
     @Delete
     public void delete(UUID id) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_ANIMAL_ID)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_ANIMAL_ID)) {
             preparedStatement.setObject(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -172,7 +185,8 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
     @Override
     @Put
     public boolean create(Animal animal) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_ANIMAL)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_ANIMAL)) {
             addParameterIntoRequest(animal, preparedStatement);
             preparedStatement.executeUpdate();
             return true;
@@ -190,7 +204,8 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
     @Override
     @Put
     public void update(Animal animal) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ANIMAL)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ANIMAL)) {
             addParameterIntoRequest(animal, preparedStatement);
             preparedStatement.setObject(7, animal.getId());
             preparedStatement.executeUpdate();

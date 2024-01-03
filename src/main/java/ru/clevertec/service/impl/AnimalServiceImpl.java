@@ -1,6 +1,8 @@
 package ru.clevertec.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.clevertec.dao.IBaseDao;
 import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.entity.Animal;
@@ -21,17 +23,19 @@ import java.util.stream.Collectors;
  *
  * @author Кечко Елена
  */
-@RequiredArgsConstructor
+@Service
 public class AnimalServiceImpl implements IBaseService<AnimalDto> {
 
     /**
      * Поле для работы с dao
      */
-    private final IBaseDao<UUID, Animal> animalDao;
+    @Autowired
+    private IBaseDao<UUID, Animal> animalDao;
     /**
      * Поле для работы с mapper'ом
      */
-    private final AnimalMapper mapper;
+    @Autowired
+    private AnimalMapper mapper;
 
     /**
      * ищет животное по идентификатору
@@ -105,7 +109,7 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
      * @param animalDto DTO с информацией об обновлении
      */
     @Override
-    public void update(UUID uuid, AnimalDto animalDto) throws ValidatorException{
+    public void update(UUID uuid, AnimalDto animalDto) throws ValidatorException {
         try {
             if (ObjectValidator.validate(animalDto)) {
                 Animal animalUpdate = animalDao.findEntityById(uuid).orElseThrow(() -> new AnimalNotFoundException(uuid));

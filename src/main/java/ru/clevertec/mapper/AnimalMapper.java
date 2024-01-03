@@ -3,6 +3,7 @@ package ru.clevertec.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.springframework.stereotype.Component;
 import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.entity.Animal;
 
@@ -14,7 +15,7 @@ import ru.clevertec.entity.Animal;
  *
  * @author Кечко Елена
  */
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AnimalMapper {
 
     /**

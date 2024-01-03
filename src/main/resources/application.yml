@@ -3,3 +3,9 @@ algorithm: LRU #LFU
 pathForCheck : C:\\Temp\\
 liquibase.change-log: db/changelog/changelog.xml
 liquibase.enable: true
+
+db.user: postgres
+db.password: pass
+db.serverName: localhost
+db.port: 5432
+db.databaseName: zoodb
