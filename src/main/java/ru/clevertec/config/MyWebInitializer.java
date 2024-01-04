@@ -7,7 +7,7 @@ public class MyWebInitializer extends AbstractAnnotationConfigDispatcherServletI
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{SpringConfig.class};
+        return new Class[]{DBConfig.class, CacheConfig.class};
     }
 
     @Override
