@@ -30,10 +30,11 @@ dependencies {
     implementation 'org.springframework:spring-core:6.1.2'
     implementation 'org.springframework:spring-beans:6.1.2'
     implementation 'org.springframework:spring-webmvc:6.1.2'
+
     implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 
     implementation 'org.slf4j:slf4j-api:1.7.36'
-    implementation 'ch.qos.logback:logback-classic:1.2.9'
+    implementation 'ch.qos.logback:logback-classic:1.4.12'
 
     implementation("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
     implementation("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
