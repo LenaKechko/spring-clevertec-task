@@ -1,13 +1,14 @@
 package ru.clevertec.proxy;
 
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.clevertec.entity.Animal;
 import ru.clevertec.exception.AnimalNotFoundException;
 import ru.clevertec.proxy.cache.IBaseCache;
-import ru.clevertec.proxy.cache.imp.LFUCache;
-import ru.clevertec.proxy.cache.imp.LRUCache;
-import ru.clevertec.util.LoadPropertyFromFile;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -19,24 +20,14 @@ import java.util.UUID;
  * @author Кечко Елена
  */
 @Aspect
+@Component
 public class CacheProxyAspect {
 
     /**
-     * Поле типа кэш
+     * Поле типа кэш. Внедряется бином
      */
+    @Autowired
     private IBaseCache<UUID, Animal> cache;
-
-    /**
-     * Конструктор. Опеределятся тип и размер кэша из файла application.yml
-     */
-    public CacheProxyAspect() {
-        Integer sizeCache = LoadPropertyFromFile.getSizeCache();
-        String algorithmCache = LoadPropertyFromFile.getAlgorithm();
-        switch (algorithmCache) {
-            case "LRU" -> cache = new LRUCache<>(sizeCache);
-            case "LFU" -> cache = new LFUCache<>(sizeCache);
-        }
-    }
 
     /**
      * Метод выполняющийся перед поиском по индексу в бд

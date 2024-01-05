@@ -16,6 +16,7 @@ import ru.clevertec.exception.AnimalNotFoundException;
 import ru.clevertec.exception.ValidatorException;
 import ru.clevertec.mapper.AnimalMapper;
 import ru.clevertec.util.AnimalTestDataForService;
+import ru.clevertec.writer.IWriter;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class AnimalServiceImplTest {
 
+    @Mock
+    private IWriter<AnimalDto> writer;
     @Mock
     private AnimalMapper mapper;
     @Mock

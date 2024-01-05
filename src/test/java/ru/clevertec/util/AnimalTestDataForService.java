@@ -1,10 +1,14 @@
 package ru.clevertec.util;
 
 import lombok.Data;
-import ru.clevertec.config.connection.MySingletonConnection;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.clevertec.config.CacheConfig;
+import ru.clevertec.config.DBConfig;
+import ru.clevertec.config.WriterConfig;
 import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.entity.Animal;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,10 +33,12 @@ public class AnimalTestDataForService {
     private double speed;
 
     public AnimalTestDataForService() {
-        Connection connection = MySingletonConnection.INSTANCE.getConnectionDB();
         String SQL_SELECT_ALL_ANIMALS = "SELECT * FROM animals";
-        try (
-                Statement statement = connection.createStatement()) {
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(DBConfig.class, WriterConfig.class, CacheConfig.class);
+        DataSource dataSource = context.getBean("dataSource", DataSource.class);
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(SQL_SELECT_ALL_ANIMALS);
             while (rs.next()) {
                 UUID id = UUID.fromString(rs.getString(1));
