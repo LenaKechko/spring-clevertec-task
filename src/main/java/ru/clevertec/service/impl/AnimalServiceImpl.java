@@ -114,8 +114,6 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
                 Animal animalUpdate = animalDao.findEntityById(uuid).orElseThrow(() -> new AnimalNotFoundException(uuid));
                 animalDao.update(mapper.merge(animalUpdate, animalDto));
             }
-//        } catch (ValidatorException e) {
-//            System.out.println(e.getMessage());
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }

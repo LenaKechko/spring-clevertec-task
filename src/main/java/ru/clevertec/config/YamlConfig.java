@@ -12,11 +12,19 @@ import org.springframework.core.io.ClassPathResource;
 import java.util.Objects;
 import java.util.Properties;
 
+/**
+ * Конфигурационный класс для работы с данными в application.yml
+ */
 @Configuration
 @ComponentScan(basePackages = "ru.clevertec")
 @PropertySource(value = "classpath:application.yml")
 public class YamlConfig {
 
+    /**
+     * Бин для чтения данных из файла application.yml и парсинга файла
+     *
+     * @return фабрика, в которой хранится информация с конфигруацией приложения
+     */
     @Bean
     public BeanFactoryPostProcessor beanFactoryPostProcessor() {
         PropertySourcesPlaceholderConfigurer propertyConfigure = new PropertySourcesPlaceholderConfigurer();

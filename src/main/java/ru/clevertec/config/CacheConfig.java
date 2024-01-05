@@ -16,19 +16,36 @@ import ru.clevertec.proxy.cache.imp.LRUCache;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Конфигурационный класс для работы с кэшом
+ */
 @Configuration
 @ComponentScan(basePackages = "ru.clevertec")
 @EnableAspectJAutoProxy
 @Slf4j
 public class CacheConfig {
 
+    /**
+     * Зависимость для работы с данными из application.yml
+     */
     @Autowired
     private BeanFactoryPostProcessor beanFactoryPostProcessor;
+    /**
+     * Поле с размером кэша
+     */
     @Value("${cache.size}")
     private Integer cacheSize;
+    /**
+     * Поле с алгоритмом кэширования. Доступно LFU и LRU
+     */
     @Value("${cache.algorithm}")
     private String cacheAlgorithm;
 
+    /**
+     * Создание бина для кэша
+     *
+     * @return объект типа кэш
+     */
     @Bean
     public IBaseCache<UUID, Animal> cache() {
         String algorithmCache = cacheAlgorithm;

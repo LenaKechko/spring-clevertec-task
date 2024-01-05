@@ -24,7 +24,7 @@ import java.util.UUID;
 public class CacheProxyAspect {
 
     /**
-     * Поле типа кэш
+     * Поле типа кэш. Внедряется бином
      */
     @Autowired
     private IBaseCache<UUID, Animal> cache;

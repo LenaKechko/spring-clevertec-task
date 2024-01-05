@@ -1,6 +1,5 @@
 package ru.clevertec.dao.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,10 +20,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Конпонент spring-приложения.
+ * Работает с БД.
+ */
 @Component
 @Slf4j
 public class AnimalDao implements IBaseDao<UUID, Animal> {
 
+    /**
+     * Внедрение зависимости для подключения к БД
+     */
     @Autowired
     private DataSource dataSource;
 
@@ -95,6 +101,13 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
         return animals;
     }
 
+    /**
+     * Метод для просмотра данных из БД в определенном количестве и последовательно
+     *
+     * @param page номер страницы
+     * @param size количество элементов на странице
+     * @return List объектов сущности
+     */
     public List<Animal> findAll(int page, int size) {
         log.info("Dao");
         List<Animal> animals = new ArrayList<>();
@@ -214,6 +227,12 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
         }
     }
 
+    /**
+     * Метод, отвечающий за добавление параметров в параметризированные запросы
+     *
+     * @param animal            объект
+     * @param preparedStatement объект с телом запроса
+     */
     private static void addParameterIntoRequest(Animal animal, PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setString(1, animal.getName());
         preparedStatement.setString(2, animal.getTypeOfAnimal());
@@ -223,6 +242,13 @@ public class AnimalDao implements IBaseDao<UUID, Animal> {
         preparedStatement.setDouble(6, animal.getSpeed());
     }
 
+    /**
+     * Метод, приводящий результат запроса к объекту
+     *
+     * @param id идентификатор сущности
+     * @param rs ответ на sql-запрос
+     * @return сущность
+     */
     private static Animal newAnimalFromRequest(UUID id, ResultSet rs) throws SQLException {
         String name = rs.getString("name");
         String typeOfAnimal = rs.getString("type_of_animal");

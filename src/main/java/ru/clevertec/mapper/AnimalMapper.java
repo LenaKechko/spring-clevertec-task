@@ -3,15 +3,13 @@ package ru.clevertec.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.springframework.stereotype.Component;
 import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.entity.Animal;
 
 /**
- * Класс реализующий сущность Animal, соответствует таблице БД animals
- * С помощью аннотация Lombok были созданы getter's и setter's для полей класса, toString
- * и возможность созадния объекта с помощью Builder
- * а также конструктор по умолчанию и конструктор со всеми полями
+ * Интерфейс реализующий слой маппинга объектов,
+ * преобразование из AnimalDto в Animal и обратно.
+ * Инмлементация интерфейса является spring-компонентом
  *
  * @author Кечко Елена
  */

@@ -26,7 +26,9 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class WriterPdfImpl<T> implements IWriter<T> {
 
-
+    /**
+     * Путь к папке, в которой будет размещаться созданный файл
+     */
     private final String path;
     /**
      * Константа, определяющая путь к шаблону

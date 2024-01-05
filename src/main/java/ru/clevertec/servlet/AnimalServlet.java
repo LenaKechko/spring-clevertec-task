@@ -1,17 +1,12 @@
 package ru.clevertec.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.exception.AnimalNotFoundException;
 import ru.clevertec.exception.ValidatorException;
@@ -26,12 +21,15 @@ import java.util.UUID;
 /**
  * Класс (сервлет), отвечающий за обработку запросов о животных
  * Обрабатывает запросы приходящие по пути '/animals/*'
+ * Является spring-компонентом
  */
-
 @Component
 @Slf4j
 public class AnimalServlet extends HttpServlet {
 
+    /**
+     * Поле для работы с сервисом. Внедряется
+     */
     @Autowired
     private IBaseService<AnimalDto> service;
 
