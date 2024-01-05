@@ -1,5 +1,18 @@
-sizeCache: 3
-algorithm: LRU #LFU
-pathForCheck : C:\\Temp\\
-liquibase.change-log: db/changelog/changelog.xml
-liquibase.enable: true
+cache:
+  size: 3
+  algorithm: LRU
+
+fileCheck:
+  path: C:\\Temp
+  type: PDF
+
+liquibase:
+  change-log: db/changelog/changelog.xml
+  enable: true
+
+db:
+  user: postgres
+  password: pass
+  serverName: localhost
+  port: 5432
+  databaseName: zoodb

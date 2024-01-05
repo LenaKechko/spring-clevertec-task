@@ -23,6 +23,8 @@ public interface IBaseDao<K, T> {
     /**
      * Метод для просмотра данных по странично
      *
+     * @param page номер страницы
+     * @param size количество элементов на странице
      * @return List объектов сущности
      */
     List<T> findAll(int page, int size);
