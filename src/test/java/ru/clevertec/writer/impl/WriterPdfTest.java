@@ -17,12 +17,13 @@ class WriterPdfTest {
     @Test
     void createFileShouldCheckContent() throws IOException {
         // given
+        String path = "C:\\Temp\\";
         String testCaption = "My caption";
         AnimalDto testAnimalDto = AnimalTestData.builder().build().buildAnimalDto();
         String expected = (testCaption + "\n" + testAnimalDto.toString())
                 .replaceAll(" ", "")
                 .replaceAll("\n", "");
-        WriterPdf<AnimalDto> writerPdf = new WriterPdf<>();
+        WriterPdfImpl<AnimalDto> writerPdf = new WriterPdfImpl<>(path);
 
         // when
         String nameNewFile = writerPdf.createFile(testCaption, testAnimalDto);
