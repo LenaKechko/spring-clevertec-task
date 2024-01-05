@@ -7,8 +7,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ru.clevertec.dto.AnimalDto;
 import ru.clevertec.exception.AnimalNotFoundException;
@@ -26,18 +28,12 @@ import java.util.UUID;
  * Обрабатывает запросы приходящие по пути '/animals/*'
  */
 
-@WebServlet(name = "Animal", urlPatterns = "/animals/*")
+@Component
 @Slf4j
 public class AnimalServlet extends HttpServlet {
 
     @Autowired
     private IBaseService<AnimalDto> service;
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
-    }
 
     /**
      * Метод обрабатывающий запросы GET
