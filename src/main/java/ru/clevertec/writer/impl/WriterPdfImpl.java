@@ -4,6 +4,7 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import ru.clevertec.writer.IWriter;
 import ru.clevertec.writer.util.pdf.CreatePdfDocumentContent;
 import ru.clevertec.writer.util.pdf.impl.CreatePdfPageImpl;
@@ -26,7 +27,7 @@ import java.util.Objects;
 public class WriterPdfImpl<T> implements IWriter<T> {
 
 
-    private final String path;// = "C:\\Temp\\";
+    private final String path;
     /**
      * Константа, определяющая путь к шаблону
      */
@@ -41,15 +42,18 @@ public class WriterPdfImpl<T> implements IWriter<T> {
      * @param entity  запись сущности
      * @return имя созданного файла
      */
+    @SneakyThrows
     @Override
     public String createFile(String caption, T entity) {
         String dest = DEST_PATH + entity.getClass().getSimpleName() + "_"
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + ".pdf";
         File folder = new File(path);
-        if (folder.mkdir()) {
-            dest = folder + dest;
+        if (!folder.exists()) {
+            folder.mkdir();
         }
-
+        if (folder.exists()) {
+            dest = folder.getAbsolutePath() + dest;
+        }
         PdfDocument destPdf = createPdfWriter(dest);
         if (FILE_TEMPLATE.isEmpty()) {
             new CreatePdfPageImpl(destPdf).createPage();

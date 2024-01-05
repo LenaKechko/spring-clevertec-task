@@ -2,7 +2,9 @@ cache:
   size: 3
   algorithm: LRU
 
-pathForCheck: C:\\Temp\\
+fileCheck:
+  path: C:\\Temp
+  type: PDF
 
 liquibase:
   change-log: db/changelog/changelog.xml

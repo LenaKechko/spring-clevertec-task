@@ -1,8 +1,6 @@
 package ru.clevertec.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.stereotype.Service;
 import ru.clevertec.dao.IBaseDao;
 import ru.clevertec.dto.AnimalDto;
@@ -12,8 +10,7 @@ import ru.clevertec.exception.ValidatorException;
 import ru.clevertec.mapper.AnimalMapper;
 import ru.clevertec.service.IBaseService;
 import ru.clevertec.validator.ObjectValidator;
-import ru.clevertec.writer.Writer;
-import ru.clevertec.writer.impl.WriterPdfImpl;
+import ru.clevertec.writer.IWriter;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,12 +34,8 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
      */
     @Autowired
     private AnimalMapper mapper;
-
     @Autowired
-    private BeanFactoryPostProcessor beanFactoryPostProcessor;
-
-    @Value("${pathForCheck}")
-    private String path;
+    private IWriter<AnimalDto> writer;
 
     /**
      * ищет животное по идентификатору
@@ -56,8 +49,7 @@ public class AnimalServiceImpl implements IBaseService<AnimalDto> {
         Animal animal = animalDao.findEntityById(uuid)
                 .orElseThrow(() -> new AnimalNotFoundException(uuid));
         AnimalDto animalDto = mapper.toAnimalDTO(animal);
-        Writer<AnimalDto> writer = new Writer<>(new WriterPdfImpl<>(path));
-        writer.runWriter("Информация по животному с кодом: " + uuid, animalDto);
+        writer.createFile("Информация по животному с кодом: " + uuid, animalDto);
         return animalDto;
     }
 
